@@ -4,6 +4,15 @@ body {
     background-image: url("../images/dark-paths.png");
 }
 
+.eventWheel {
+    margin: 50px;
+    border: 10px solid greenyellow;
+}
+
+.slick-next {
+    background-color: green; 
+}
+
 #canvas-image-blending {
     position: absolute;
     display: block;

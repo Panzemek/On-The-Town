@@ -19,6 +19,9 @@ var granimInstance = new Granim({
         }
     }
 });
+
+// Courousel script
+let cuisineArr = ["American", "Italian", "Chinese", "Japanese", "Thai", "Vietnamese", "Mediterranean", "Mexican", "African", "Indian"]
   
 // Event API script 
 var place = "seattle"
@@ -49,8 +52,6 @@ $.ajax({
 randomEventPick(response)
 });
  
-
-
 var catObj = {
     "music" : 103,
     "business & professional" : 101,
@@ -83,9 +84,6 @@ $("#sub").on("click", function (event){
     categories = catObj[userI];
     console.log("numberid" , categories)
     
-
-
-
 var catQueryUrl =  "https://www.eventbriteapi.com/v3/events/search/?location.address="+place+"&location.within=5km&expand=venue&token=QHBNEFWIRBGDKAUY44N7&categories="+ categories;
 
 $.ajax({  
@@ -97,8 +95,7 @@ $.ajax({
     randomEventPick(response);
        
 })
- 
-
+  
 })
   
 // Zomato API below
@@ -118,7 +115,7 @@ function randomRestaurantPick(response) {
     console.log (rpName, rpCuisine, rpLocation, rpLink);
     nameLink = $("<a href="+rpLink+" target=_blank>"+rpName+"</a>");
     rpImg = $("<img src="+randomPick.restaurant.thumb+">")
-    
+ 
     $("#food-result").append("<p><a href="+rpLink+" target=_blank>"+rpName+"</a></p>");
     $("#food-result").append("<p>"+rpCuisine+"</p>");
     $("#food-result").append("<p>"+rpLocation+"</p>");
@@ -141,7 +138,31 @@ function pullRestaurantInfo(param) {
     });
 }
 
-// random seattle restaurant
+let restaurantImages = {
+    American: "assets/images/restaurants/american.jpg",
+    Italian: "assets/images/restaurants/italian.jpg",
+    Chinese: "assets/images/restaurants/chinese.jpg",
+    Japanese: "assets/images/restaurants/japanese.jpg",
+    Thai: "assets/images/restaurants/thai.jpg",
+    Vietnamese: "assets/images/restaurants/vietnamese.jpg",
+    Mediterranean: "assets/images/restaurants/mediterranean.jpg",
+    Mexican: "assets/images/restaurants/mexican.jpg",
+    African: "assets/images/restaurants/african.jpg",
+    Indian: "assets/images/restaurants/indian.jpg",
+}
+
+$(document).ready(function(){
+
+    $("#goButton").on("click", function() {
+        $("#eventCarousel").carousel("cycle");
+        console.log("clickCarousel");
+        $("#restaurantCarousel").carousel("cycle");
+        console.log("clickRestaurant");
+       
+    });
+    
+});
+
 $("#food-roulette-button").click(buildFoodResult);
 
 function buildFoodResult() {
