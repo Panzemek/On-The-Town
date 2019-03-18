@@ -97,6 +97,11 @@ body {
     align-items: center;
 }
 
+#food-result {
+    flex-flow: column;
+    align-items: center;
+}
+
 .column-centered-container {
     justify-content: space-around;
 

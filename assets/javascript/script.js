@@ -14,10 +14,10 @@ function randomRestaurantPick(response) {
     nameLink = $("<a href="+rpLink+" target=_blank>"+rpName+"</a>");
     rpImg = $("<img src="+randomPick.restaurant.thumb+">")
 
-    $("body").append("<p><a href="+rpLink+" target=_blank>"+rpName+"</a></p>");
-    $("body").append("<p>"+rpCuisine+"</p>");
-    $("body").append("<p>"+rpLocation+"</p>");
-    $("body").append(rpImg);
+    $("#food-result").append("<p><a href="+rpLink+" target=_blank>"+rpName+"</a></p>");
+    $("#food-result").append("<p>"+rpCuisine+"</p>");
+    $("#food-result").append("<p>"+rpLocation+"</p>");
+    $("#food-result").append(rpImg);
 }
 
 function pullRestaurantInfo(param) {
@@ -37,8 +37,13 @@ function pullRestaurantInfo(param) {
 }
 
 // random seattle restaurant
-pullRestaurantInfo("restaurant");
+$("#food-roulette-button").click(buildFoodResult);
+
+function buildFoodResult() {
+    $("#food-result").empty();
+    pullRestaurantInfo("restaurant");
+}
 // cuisine search
-pullRestaurantInfo("Mediterranean");
-// neighborhood search
-pullRestaurantInfo("Wallingford");
+// pullRestaurantInfo("Mediterranean");
+// // neighborhood search
+// pullRestaurantInfo("Wallingford");
