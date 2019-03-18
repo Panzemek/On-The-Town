@@ -1,32 +1,32 @@
-// var place = "seattle"
+var place = "seattle"
 
     
-// var queryUrl =  "https://www.eventbriteapi.com/v3/events/search/?location.address="+place+"&location.within=5km&expand=venue&token=QHBNEFWIRBGDKAUY44N7";
+var placeQueryUrl =  "https://www.eventbriteapi.com/v3/events/search/?location.address="+place+"&location.within=5km&expand=venue&token=QHBNEFWIRBGDKAUY44N7";
 
-// $.ajax({  
-//     url: queryUrl,
-//     dataType: 'json',
-//     method: "GET",
-// }).then(function(response){
-//     console.log(response);
+function randomEventPick(response) {
+            let arr = response.events;
+            let randomPick = arr[Math.floor(Math.random() * arr.length)];
     
-//     function randomEventPick(response) {
-//         let arr = response.events;
-//         let randomPick = arr[Math.floor(Math.random() * arr.length)];
+            let rpName = randomPick.summary;
+            let rpImage = randomPick.logo.url;
+            let rpLocation = randomPick.venue.address.address_1;
+    
+            console.log(rpName);
+            console.log(rpImage);
+            console.log(rpLocation)
+}
+$.ajax({  
+    url: placeQueryUrl,
+    dataType: 'json',
+    method: "GET",
+}).then(function(response){
+    console.log(response);
+    
+    
 
-//         let rpName = randomPick.summary;
-//         let rpImage = randomPick.logo.url;
-//         let rpLocation = randomPick.venue.address.address_1;
-
-//         console.log(rpName);
-//         console.log(rpImage);
-//         console.log(rpLocation)
-//     }
-
-
-// randomEventPick(response)
-
-// }); 
+randomEventPick(response)
+});
+ 
 
 
 var catObj = {
@@ -60,19 +60,22 @@ $("#sub").on("click", function (event){
     console.log("userinput" , userI);
     categories = catObj[userI];
     console.log("numberid" , categories)
-})
+    
 
 
-var queryUrl =  "https://www.eventbriteapi.com/v3/categories/music/&token=QHBNEFWIRBGDKAUY44N7";
+
+var catQueryUrl =  "https://www.eventbriteapi.com/v3/events/search/?location.address="+place+"&location.within=5km&expand=venue&token=QHBNEFWIRBGDKAUY44N7&categories="+ categories;
 
 $.ajax({  
-    url: queryUrl,
+    url: catQueryUrl,
     dataType: 'json',
     method: "GET",
 }).then(function(response){
     console.log(response)
+    randomEventPick(response);
+       
 })
+ 
 
-
-
+})
 
