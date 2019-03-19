@@ -51,6 +51,8 @@ let restaurantImages = {
     Indian: "assets/images/restaurants/indian.jpg",
 }
 
+
+
 $(document).ready(function(){
 
     $("#goButton").on("click", function() {
