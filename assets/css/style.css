@@ -1,0 +1,154 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url("../images/dark-paths.png");
+}
+
+.eventWheel {
+    margin: 50px;
+    border: 10px solid greenyellow;
+}
+
+.slick-next {
+    background-color: green; 
+}
+
+#canvas-image-blending {
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 300px;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: -1;
+}
+
+#title-text {
+    color: white;
+    font-size: 6em;
+    text-align: center;
+    margin-top: 55px;
+    font-family: 'Caveat', cursive;
+}
+
+.flex-container {
+    display: flex;
+}
+
+.all-content-center {
+    width: 100%;
+    justify-content: center;
+}
+
+.all-content-width {
+    width: 960px;
+    align-self: center;
+    flex-flow: column;
+    
+}
+
+#header {
+    width: 100%;
+    height: 150px;
+    align-items: center;
+    justify-content: center;
+}
+
+
+#when-where-content {
+    flex-flow: column nowrap;
+    align-content: space-around;
+}
+
+#day-list {
+    flex-flow: row nowrap;
+}
+
+.day-box {
+    justify-content: center;
+    align-items: center;
+    margin-right: 3px;
+    height: 45px;
+    width: 45px;
+    background: rgb(100, 136, 255);
+    border: 1px solid black;
+   
+}
+
+[data-selected="true"]{
+    box-shadow: 3px 3px 15px #666;
+    border-color:rgb(220, 235, 255);
+}
+
+#select-when-text, #select-where-text {
+    justify-content: center;
+    align-items: center;
+    margin-right: 3px;
+    height: 45px;
+    width: 250px;
+    color: white;
+    font-size: 2em;
+    font-family: 'Caveat', cursive;
+}
+
+.form-group {
+    margin-top: 4px;
+    width: 382px;
+}
+
+.location-form-group {
+    height: 45px;
+}
+
+#roulette-elements-container{
+margin-top: 10px;
+    margin-bottom: 10px;
+    justify-content: space-between;
+    background: black;
+}
+
+.roulette-container {
+    width: 49.8%;
+    height: 300px;
+    background: rgb(212, 97, 97);
+    justify-content: center;
+    align-items: center;
+}
+
+#food-roulette, #event-roulette, .carousel, #restaurantCarousel, #eventCarousel, .carousel-inner, .carousel-item, .d-block {
+    height: 100%;
+}
+
+.column-centered-container {
+    justify-content: space-around;
+}
+
+.narrow-text-div {
+    margin-top: 3px;
+    color: rgb(175, 175, 175);
+}
+
+#narrow-down-container{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    justify-content: space-around;
+}
+
+#event-narrow-container, #food-narrow-container {
+    width: 30%;
+    height: 300px;
+    opacity: .7;
+    background: gray;
+    border: rgb(255, 255, 255) solid 1px;
+    flex-flow: column nowrap;
+}
+
+#event-narrow-list, #food-narrow-list {
+    flex-flow: column nowrap;
+    margin: 5px;
+}
+
+/* @media only screen and (max-width:960px) {
+
+} */
