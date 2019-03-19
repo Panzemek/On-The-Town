@@ -35,7 +35,7 @@ function buildDayList() {
     for (i = 6; i > 0; i--) {
         var dayBox = $("<div>");
         dayBox.addClass("day-box flex-container");
-        dayBox.attr("data-day","day-" + i);
+        dayBox.attr("data-day", "day-" + i);
         dayBox.attr("data-selected", "false");
         dayBox.attr("data-date", moment().add(i, "days").format("YYYYMMDD"));
         dayBox.text(moment().add(i, "days").format("ddd"));
@@ -49,7 +49,7 @@ function buildDayList() {
     todayBox.attr("data-date", moment().add(i, "days").format("YYYYMMDD"));
     todayBox.text("Today");
     $(".when-container").prepend(todayBox);
-   
+
     var todayText = $("<div>");
     todayText.addClass("flex-container");
     todayText.attr("id", "select-when-text");
@@ -57,32 +57,30 @@ function buildDayList() {
     $(".when-container").prepend(todayText);
 }
 
-$(".day-box").click(function() {
+$(".day-box").click(function () {
     $(".day-box").attr("data-selected", "false");
     $(this).attr("data-selected", "true");
 })
 
-var place = "seattle"
-
 var placeQueryUrl = "https://www.eventbriteapi.com/v3/events/search/?location.address=" + place + "&location.within=5km&expand=venue&token=QHBNEFWIRBGDKAUY44N7";
 
 function randomEventPick(response) {
-            let arr = response.events;
-            let randomPick = arr[Math.floor(Math.random() * arr.length)];
-    
-            let rpName = randomPick.summary;
-            let rpImage = randomPick.logo.url;
-            let rpLocation = randomPick.venue.address.address_1;
-            let rpTime = randomPick.start.local;
-            let rpLat = randomPick.venue.latitude;
-            let rpLon = randomPick.venue.longitude;
-    
-            console.log(rpName);
-            console.log(rpImage);
-            console.log(rpLocation);
-            console.log(rpTime);
-            console.log(rpLat);
-            console.log(rpLon);
+    let arr = response.events;
+    let randomPick = arr[Math.floor(Math.random() * arr.length)];
+
+    let rpName = randomPick.summary;
+    let rpImage = randomPick.logo.url;
+    let rpLocation = randomPick.venue.address.address_1;
+    let rpTime = randomPick.start.local;
+    let rpLat = randomPick.venue.latitude;
+    let rpLon = randomPick.venue.longitude;
+
+    console.log(rpName);
+    console.log(rpImage);
+    console.log(rpLocation);
+    console.log(rpTime);
+    console.log(rpLat);
+    console.log(rpLon);
 }
 
 var catObj = {
@@ -111,32 +109,30 @@ var catObj = {
 
 var categories
 var place
-var userI 
+var userI
 var userI2
 var userI3
 var dateOfEvent
-$("#sub").on("click", function (event){
+$("#sub").on("click", function (event) {
     event.preventDefault();
     userI = $("#cate").val().trim();
-    console.log("userinput" , userI);
+    console.log("userinput", userI);
     categories = catObj[userI];
-    console.log("numberid" , categories);
+    console.log("numberid", categories);
     userI2 = $("#dateOf").val();
-    console.log("userinput2" , userI2);
+    console.log("userinput2", userI2);
     dateOfEvent = userI2;
     userI3 = $("#loc").val().trim();
     place = userI3;
- 
+});
 
-var dateQueryUrl ="https://www.eventbriteapi.com/v3/events/search/?sort_by=date&location.address="+place+"&location.within=10km&categories="+categories+"&start_date.range_start="+dateOfEvent+"T00%3A00%3A01&start_date.range_end="+dateOfEvent+"T23%3A59%3A59&expand=venue&token=QHBNEFWIRBGDKAUY44N7";
+var dateQueryUrl = "https://www.eventbriteapi.com/v3/events/search/?sort_by=date&location.address=" + place + "&location.within=10km&categories=" + categories + "&start_date.range_start=" + dateOfEvent + "T00%3A00%3A01&start_date.range_end=" + dateOfEvent + "T23%3A59%3A59&expand=venue&token=QHBNEFWIRBGDKAUY44N7";
 
-
-   
-    $.ajax({  
+$.ajax({
     url: dateQueryUrl,
 
     method: "GET",
-}).then(function(response){
+}).then(function (response) {
     console.log(response)
     randomEventPick(response);
 })
