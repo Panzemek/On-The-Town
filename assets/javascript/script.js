@@ -1,7 +1,4 @@
-var place = "seattle"
 
-    
-var placeQueryUrl =  "https://www.eventbriteapi.com/v3/events/search/?location.address="+place+"&location.within=5km&expand=venue&token=QHBNEFWIRBGDKAUY44N7";
 
 function randomEventPick(response) {
             let arr = response.events;
@@ -10,24 +7,18 @@ function randomEventPick(response) {
             let rpName = randomPick.summary;
             let rpImage = randomPick.logo.url;
             let rpLocation = randomPick.venue.address.address_1;
+            let rpTime = randomPick.start.local;
+            let rpLat = randomPick.venue.latitude;
+            let rpLon = randomPick.venue.longitude;
     
             console.log(rpName);
             console.log(rpImage);
-            console.log(rpLocation)
+            console.log(rpLocation);
+            console.log(rpTime);
+            console.log(rpLat);
+            console.log(rpLon);
 }
-$.ajax({  
-    url: placeQueryUrl,
-    dataType: 'json',
-    method: "GET",
-}).then(function(response){
-    console.log(response);
-    
-    
-
-randomEventPick(response)
-});
  
-
 
 var catObj = {
     "music" : 103,
@@ -53,22 +44,32 @@ var catObj = {
     "school Activites" : 120
 }
 var categories
+var place
 var userI 
+var userI2
+var userI3
+var dateOfEvent
 $("#sub").on("click", function (event){
     event.preventDefault();
-    userI = $("#cate").val();
+    userI = $("#cate").val().trim();
     console.log("userinput" , userI);
     categories = catObj[userI];
-    console.log("numberid" , categories)
-    
+    console.log("numberid" , categories);
+    userI2 = $("#dateOf").val();
+    console.log("userinput2" , userI2);
+    dateOfEvent = userI2;
+    userI3 = $("#loc").val().trim();
+    place = userI3;
+ 
+
+var dateQueryUrl ="https://www.eventbriteapi.com/v3/events/search/?sort_by=date&location.address="+place+"&location.within=10km&categories="+categories+"&start_date.range_start="+dateOfEvent+"T00%3A00%3A01&start_date.range_end="+dateOfEvent+"T23%3A59%3A59&expand=venue&token=QHBNEFWIRBGDKAUY44N7";
 
 
 
-var catQueryUrl =  "https://www.eventbriteapi.com/v3/events/search/?location.address="+place+"&location.within=5km&expand=venue&token=QHBNEFWIRBGDKAUY44N7&categories="+ categories;
 
 $.ajax({  
-    url: catQueryUrl,
-    dataType: 'json',
+    url: dateQueryUrl,
+
     method: "GET",
 }).then(function(response){
     console.log(response)
