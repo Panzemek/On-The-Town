@@ -228,10 +228,10 @@ function randomRestaurantPick(response) {
     pullRestaurantInfo(restID)
 }
 
-for(var i=0; i< neighborhoodArr.length;i++)
-{
-  $("#dropdownItems").append("<a href=>" + neighborhoodArr[i] + "<br>" + "</a>"); 
-}
+// for(var i=0; i< neighborhoodArr.length;i++)
+// {
+//   $("#dropdownItems").append("<a href=>" + neighborhoodArr[i] + "<br>" + "</a>"); 
+// }
 
 function pullRestaurantInfo(param) {
     let QueryUrl = "https://developers.zomato.com/api/v2.1/search?q=" + param + "&cities?q=seattle";
