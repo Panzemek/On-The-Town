@@ -83,9 +83,6 @@ $("#datepicker").click(function () {
     });
     dp.css("position", "relative");
     dp.css("z-index", 1000);
-
-
-
 });
 
 
@@ -192,9 +189,13 @@ function randomRestaurantPick(response) {
     pullRestaurantInfo(restID)
 }
 
-function pullRestaurantInfo(restID) {
+for(var i=0; i< neighborhoodArr.length;i++)
+{
+  $("#dropdownItems").append("<a href=>" + neighborhoodArr[i] + "<br>" + "</a>"); 
+}
 
-    let QueryUrl = "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/details/json?placeid="+restID+"&key=AIzaSyDF_fqwmBu3FLIxPBFJLXZuWD5l-23ts74";
+function pullRestaurantInfo(param) {
+    let QueryUrl = "https://developers.zomato.com/api/v2.1/search?q=" + param + "&cities?q=seattle";
 
     $.ajax({  
         url: QueryUrl,
