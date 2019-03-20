@@ -139,6 +139,9 @@ $.ajax({
 
 // Google API below
 
+var restLat;
+var restLng;
+
 function randomSeattleRestaurants() {
 
     queryURL = "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+seattle&key=AIzaSyDF_fqwmBu3FLIxPBFJLXZuWD5l-23ts74"
@@ -170,6 +173,9 @@ function pullRestaurantInfo(restID) {
         dataType: 'json',
         method: "GET",
     }).then(function(response){
+        restLat = response.result.geometry.location.lat;
+        restLng = response.result.geometry.location.lng;
+        console.log(restLat, restLng);
         populateRestaurantInfo(response);
     });
 }

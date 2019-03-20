@@ -152,6 +152,12 @@ margin-top: 10px;
     margin: 10px;
 }
 
+#dropdownMenuButton {
+    background: rgb(100, 136, 255);
+    border: solid thin #40284A;
+    color: #40284A;
+}
+
 .column-centered-container {
     justify-content: space-around;
 }
