@@ -20,7 +20,8 @@ var granimInstance = new Granim({
     }
 });
 
-
+var dateAsString;
+var dateAsObject;
 
 // Event API script 
 
@@ -37,16 +38,15 @@ function buildDayList() {
         dayBox.addClass("day-box flex-container");
         dayBox.attr("data-day", "day-" + i);
         dayBox.attr("data-selected", "false");
-        dayBox.attr("data-date", moment().add(i, "days").format("YYYYMMDD"));
+        dayBox.attr("data-date", moment().add(i, "days").format("L"));
         dayBox.text(moment().add(i, "days").format("ddd"));
-        console.log(dayBox);
         $(".when-container").prepend(dayBox);
     }
     var todayBox = $("<div>");
     todayBox.addClass("day-box flex-container");
     todayBox.attr("data-day", "day-" + 0);
     todayBox.attr("data-selected", "false");
-    todayBox.attr("data-date", moment().add(i, "days").format("YYYYMMDD"));
+    todayBox.attr("data-date", moment().add(i, "days").format("L"));
     todayBox.text("Today");
     $(".when-container").prepend(todayBox);
 
@@ -60,9 +60,38 @@ function buildDayList() {
 $(".day-box").click(function () {
     $(".day-box").attr("data-selected", "false");
     $(this).attr("data-selected", "true");
+    dateAsString = $(this).attr("data-date");
+    console.log(dateAsString);
 })
 
-// function that pulls a random event from the eventbrite api within the specified parameters (location, date, event type)
+$('html').click(function (e) {
+    if (!$(e.target).hasClass('ui-widget') && !$(e.target).hasClass('ui-corner-all') && !$(e.target).hasClass('ui-datepicker-title') && !$(e.target).hasClass('ui-datepicker-calendar') && !$(e.target).hasClass('calendar-pop-button') && !$(e.target).hasClass('ui-datepicker-month') && !$(e.target).hasClass('ui-datepicker-year')) {
+        var dp = $("#datepicker");
+        dp.datepicker('destroy');
+        dp.html("<i class='fas fa-calendar-alt calendar-pop-button'></i>");
+        console.log(dateAsString);
+    }
+});
+
+$("#datepicker").click(function () {
+    var dp = $(this);
+    dp.datepicker({
+        onSelect: function (dateText, inst) {
+            dateAsString = dateText;
+            dateAsObject = $(this).datepicker('getDate');
+        }
+    });
+    dp.css("position", "relative");
+    dp.css("z-index", 1000);
+
+
+
+});
+
+
+
+var placeQueryUrl = "https://www.eventbriteapi.com/v3/events/search/?location.address=" + place + "&location.within=5km&expand=venue&token=QHBNEFWIRBGDKAUY44N7";
+
 function randomEventPick(response) {
     let arr = response.events;
     //randomizer to choose one of the random events
