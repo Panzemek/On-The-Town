@@ -234,8 +234,7 @@ function randomRestaurantPick(response) {
 // }
 
 function pullRestaurantInfo(param) {
-    let QueryUrl = "https://developers.zomato.com/api/v2.1/search?q=" + param + "&cities?q=seattle";
-
+    let QueryUrl = "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/details/json?placeid="+restID+"&key=AIzaSyDF_fqwmBu3FLIxPBFJLXZuWD5l-23ts74";
     $.ajax({  
         url: QueryUrl,
         dataType: 'json',
