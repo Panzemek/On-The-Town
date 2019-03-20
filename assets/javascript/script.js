@@ -111,17 +111,22 @@ var catObj = {
     "other": 199,
     "school Activites": 120
 }
-// -----------------------------------------------------------
+
 let rpLat;
 let rpLon;
 
 function randomEventPick() {
-    console.log("RAN EVENT PICK FUNCTION");
+   
     var place = "seattle";
     var categories = "103";
-    var dateOfEvent = "2019-03-30"
+    var dateOfEvent;
+    convDate = moment(dateAsString).format("YYYY-MM-DD");
+    if (convDate) {
+        dateOfEvent = convDate;
+    } else {
+        dateOfEvent = moment();
+    }
 
-    // TODO:
     // the api url we use to get info back from eventbrtire api
     var dateQueryUrl = "https://www.eventbriteapi.com/v3/events/search/?sort_by=date&location.address="+place+"&location.within=10km&categories="+categories+"&start_date.range_start="+dateOfEvent+"T00%3A00%3A01&start_date.range_end="+dateOfEvent+"T23%3A59%3A59&expand=venue&token=QHBNEFWIRBGDKAUY44N7";
 
@@ -136,27 +141,16 @@ function randomEventPick() {
 
 function populateEvent(response) {
     let arr = response.events;
-    //randomizer to choose one of the random events
     let randomPick = arr[Math.floor(Math.random() * arr.length)];
 
-    // pulls summary of the event
     let rpName = randomPick.summary;
-    // pulls the events image
     let rpImageEv = randomPick.logo.url;
-    // pulls the events address
     let rpLocation = randomPick.venue.address.address_1;
-    // pulls time the event starts
     let rpTime = randomPick.start.local;
-    // pulls the locations latitude
     rpLat = randomPick.venue.latitude;
-    // pulls the locations longitude
     rpLon = randomPick.venue.longitude;
-    // pulls the url to eventbrite for actual event
     let rpEvent = randomPick.venue.address.resource_uri;
-    // pulls name of the event
     let rpEvName = randomPick.name.text;
-
-
     
 
     $("#event-result").empty();
@@ -165,11 +159,8 @@ function populateEvent(response) {
     $("#event-result").append("<p>" + rpLocation + "</p>");
     $("#event-result").append("<img src=" + rpImageEv + ">");
 
-    // console.log("EVENT COORDS: ", rpLat, rpLon);
-
 }
 
-// -----------------------------------------------------------------------------------
 // Google API below
 
 var restLat;
@@ -178,8 +169,6 @@ var restLng;
 function randomSeattleRestaurants() {
     
     queryURL = "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?location="+rpLat+","+rpLon+"&radius=2000&type=restaurant&keyword="+cuisineSearchString+"&key=AIzaSyDF_fqwmBu3FLIxPBFJLXZuWD5l-23ts74"
-
-    // console.log("COORDS USED FOR REST SEARCH: ", rpLat, rpLon);
 
     $.ajax({  
         url: queryURL,
@@ -298,8 +287,7 @@ function getCheckedCuisines() {
     for(var i=0; i<checkedCuisines.length; i++) {
         if(checkedCuisines[i].type ==='checkbox' && checkedCuisines[i].checked === true) {
             cuisineSearchString += checkedCuisines[i].value + "+";
-            // console.log(cuisineSearchString);
+            console.log(cuisineSearchString);
         }
     }
 }
-
