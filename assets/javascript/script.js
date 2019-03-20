@@ -254,7 +254,7 @@ function populateRestaurantInfo(response) {
     let rpImgRef = item.photos[0].photo_reference;
     let rpAddress = item.vicinity;
     
-    let imgLink = "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/photo?maxheight=200&photoreference="+rpImgRef+"&key=AIzaSyDF_fqwmBu3FLIxPBFJLXZuWD5l-23ts74";
+    let imgLink = "https://maps.googleapis.com/maps/api/place/photo?maxheight=200&photoreference="+rpImgRef+"&key=AIzaSyDF_fqwmBu3FLIxPBFJLXZuWD5l-23ts74";
 
     $("#mon").text(item.opening_hours.weekday_text[0]);
     $("#tue").text(item.opening_hours.weekday_text[1]);
