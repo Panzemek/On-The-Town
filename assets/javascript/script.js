@@ -59,7 +59,6 @@ $(".day-box").click(function () {
     $(".day-box").attr("data-selected", "false");
     $(this).attr("data-selected", "true");
     dateAsString = $(this).attr("data-date");
-    console.log(dateAsString);
 })
 
 $('html').click(function (e) {
@@ -67,7 +66,6 @@ $('html').click(function (e) {
         var dp = $("#datepicker");
         dp.datepicker('destroy');
         dp.html("<i class='fas fa-calendar-alt calendar-pop-button'></i>");
-        console.log(dateAsString);
     }
 });
 
@@ -82,8 +80,6 @@ $("#datepicker").click(function () {
     dp.css("position", "relative");
     dp.css("z-index", 1000);
 });
-
-
 // Location Dropdown
 var cities = ["Auburn", "Bellevue", "Bellingham", "Bothell", "Burien", "Edmonds", "Everett", "Federal Way", "Issaquah",  "Kent", "Kirkland", "Lynnwood", "Montlake Terrace", "Olympia", "Puyallup", "Redmond", "Renton", "Seattle", "Shoreline", "Snoqualmie","Spokane", "Tacoma", "Tukwila", "Woodinville"]
 
@@ -92,12 +88,57 @@ for(var i=0; i< cities.length;i++)
   $("#dropdownItems").append("<a href=>" + cities[i] + "<br>" + "</a>"); 
 }
 
+var catObj = {
+    "music": 103,
+    "business & professional": 101,
+    "food & drink": 110,
+    "community & culture": 113,
+    "performance & visual arts": 105,
+    "film & media entertainment": 104,
+    "sports & fitness": 108,
+    "health & wellness": 107,
+    "science & technology": 102,
+    "travel & outdoor": 109,
+    "charity & causes": 111,
+    "religion & spirituality": 114,
+    "family & education": 115,
+    "seasonal & holiday": 116,
+    "government & politics": 112,
+    "fashion & beauty": 106,
+    "home & lifestyle": 117,
+    "auto, boat, & air": 118,
+    "Hobbies & Special Interests": 119,
+    "other": 199,
+    "school Activites": 120
+}
+// -----------------------------------------------------------
 let rpLat;
 let rpLon;
 
+<<<<<<< HEAD
 var dateQueryUrl = "https://www.eventbriteapi.com/v3/events/search/?sort_by=date&location.address="+place+"&location.within=10km&categories="+categories+"&start_date.range_start="+dateOfEvent+"T00%3A00%3A01&start_date.range_end="+dateOfEvent+"T23%3A59%3A59&expand=venue&token=QHBNEFWIRBGDKAUY44N7";
+=======
+function randomEventPick() {
+    console.log("RAN EVENT PICK FUNCTION");
+    var place = "seattle";
+    var categories = "103";
+    var dateOfEvent = "2019-03-30"
 
-function randomEventPick(response) {
+    // TODO:
+    // the api url we use to get info back from eventbrtire api
+    var dateQueryUrl = "https://www.eventbriteapi.com/v3/events/search/?sort_by=date&location.address="+place+"&location.within=10km&categories="+categories+"&start_date.range_start="+dateOfEvent+"T00%3A00%3A01&start_date.range_end="+dateOfEvent+"T23%3A59%3A59&expand=venue&token=QHBNEFWIRBGDKAUY44N7";
+>>>>>>> 1bb2570caf5e0404930bf3778a809a9b6380345a
+
+    // ajax call
+    $.ajax({
+        url: dateQueryUrl,
+        method: "GET",
+    }).then(function (response) {
+        populateEvent(response);
+    })
+}
+
+function populateEvent(response) {
     let arr = response.events;
     //randomizer to choose one of the random events
     let randomPick = arr[Math.floor(Math.random() * arr.length)];
@@ -134,81 +175,11 @@ function randomEventPick(response) {
     $("#event-result").append("<p>" + rpLocation + "</p>");
     $("#event-result").append("<img src=" + rpImageEv + ">");
 
+    // console.log("EVENT COORDS: ", rpLat, rpLon);
 
-    console.log(rpName);
-    console.log(rpImageEv);
-    console.log(rpLocation);
-    console.log(rpTime);
-    console.log(rpLat);
-    console.log(rpLon);
-    console.log(rpEvent);
-    console.log(rpEvName);
 }
 
-// object of all the categories that eventbrite recognizes and the code in the form of a number that is passed into the api in the form of a number
-var catObj = {
-    "music": 103,
-    "business & professional": 101,
-    "food & drink": 110,
-    "community & culture": 113,
-    "performance & visual arts": 105,
-    "film & media entertainment": 104,
-    "sports & fitness": 108,
-    "health & wellness": 107,
-    "science & technology": 102,
-    "travel & outdoor": 109,
-    "charity & causes": 111,
-    "religion & spirituality": 114,
-    "family & education": 115,
-    "seasonal & holiday": 116,
-    "government & politics": 112,
-    "fashion & beauty": 106,
-    "home & lifestyle": 117,
-    "auto, boat, & air": 118,
-    "Hobbies & Special Interests": 119,
-    "other": 199,
-    "school Activites": 120
-}
-
-
-// variables for on click event
-var categories
-var place
-var dateOfEvent
-// user inputs 1 2 and 3
-var userI
-var userI2
-var userI3
-
-// on click function that passes in info to api
-$("#sub").on("click", function (event) {
-    event.preventDefault();
-    // gets category info
-    userI = $("#cate").val().trim();
-    console.log("userinput", userI);
-    // takes category info and turns it into a value from object
-    categories = catObj[userI];
-    console.log("numberid", categories);
-    // gets a date for the event
-    userI2 = $("#dateOf").val();
-    console.log("userinput2", userI2);
-    dateOfEvent = userI2;
-    // gets location info in the form of a city
-    userI3 = $("#location-form").val().trim();
-    place = userI3;
-});
-
-var place = "seattle";
-var categories = "103";
-var dateOfEvent = moment().calendar();
-
-// TODO:
-// the api url we use to get info back from eventbrtire api
-
-
-// ajax call
-
-
+// -----------------------------------------------------------------------------------
 // Google API below
 
 var restLat;
@@ -217,6 +188,8 @@ var restLng;
 function randomSeattleRestaurants() {
     
     queryURL = "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?location="+rpLat+","+rpLon+"&radius=2000&type=restaurant&keyword="+cuisineSearchString+"&key=AIzaSyDF_fqwmBu3FLIxPBFJLXZuWD5l-23ts74"
+
+    // console.log("COORDS USED FOR REST SEARCH: ", rpLat, rpLon);
 
     $.ajax({  
         url: queryURL,
@@ -245,7 +218,6 @@ function pullRestaurantInfo(restID) {
     }).then(function(response){
         restLat = response.result.geometry.location.lat;
         restLng = response.result.geometry.location.lng;
-        console.log(restLat, restLng);
         populateRestaurantInfo(response);
     });
 }
@@ -290,31 +262,36 @@ let restaurantImages = {
 }
 
 buildEventResult();
-buildFoodResult();
 
 $("#event-roulette-button").click(buildEventResult);
 
 function buildEventResult() {
-    $(this).off("click");
+    $("#event-roulette-button").off("click");
     $("#event-result").hide();
     $("#event-roulette").show();
     $("#eventCarousel").carousel("cycle");
     $("#event-result").empty();
+<<<<<<< HEAD
     buildFoodResult();
     randomEventPick()
 
+=======
+    randomEventPick();
+    
+>>>>>>> 1bb2570caf5e0404930bf3778a809a9b6380345a
 
     setTimeout(function () {
         $("#event-roulette").hide();
         $("#event-result").show();
-        $("#event-roulette-button").on("click", buildEventResult);
+        $("#event-roulette-button").unbind('click').on("click", buildEventResult);
+        buildFoodResult();
     }, 2000);
 }
 
 $("#food-roulette-button").click(buildFoodResult);
 
 function buildFoodResult() {
-    $(this).off("click");
+    $("#food-roulette-button").off("click");
     $("#food-result").hide();
     $("#rest-hours").hide();
     $("#food-roulette").show();
@@ -325,7 +302,7 @@ function buildFoodResult() {
         $("#food-roulette").hide();
         $("#food-result").show();
         $("#rest-hours").show();
-        $("#food-roulette-button").on("click", buildFoodResult);
+        $("#food-roulette-button").unbind('click').on("click", buildFoodResult);
     }, 2000);
 }
 
@@ -337,7 +314,7 @@ function getCheckedCuisines() {
     for(var i=0; i<checkedCuisines.length; i++) {
         if(checkedCuisines[i].type ==='checkbox' && checkedCuisines[i].checked === true) {
             cuisineSearchString += checkedCuisines[i].value + "+";
-            console.log(cuisineSearchString);
+            // console.log(cuisineSearchString);
         }
     }
 }
