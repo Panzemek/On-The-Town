@@ -47,14 +47,22 @@
                         <div id="select-where-text" class="flex-container select-whenwhere-text">
                             <p>Where's your night?</p>
                         </div>
-                        <div class="location-form-group flex-container">
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              Select location
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id=dropdownItems>
+                              <a class="dropdown-item" href="#">City, State</a>
+                            </div>
+                          </div>
+                        <!-- <div class="location-form-group flex-container">
                             <form class="location-form-group">
                                 <div class="form-group flex-container">
                                     <label for="location-form"></label>
                                     <textarea class="form-control" id="location-form" rows="1"></textarea>
                                 </div>
                             </form>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
