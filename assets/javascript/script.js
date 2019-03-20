@@ -233,7 +233,7 @@ function randomRestaurantPick(response) {
 //   $("#dropdownItems").append("<a href=>" + neighborhoodArr[i] + "<br>" + "</a>"); 
 // }
 
-function pullRestaurantInfo(param) {
+function pullRestaurantInfo(restID) {
     let QueryUrl = "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/details/json?placeid="+restID+"&key=AIzaSyDF_fqwmBu3FLIxPBFJLXZuWD5l-23ts74";
     $.ajax({  
         url: QueryUrl,
