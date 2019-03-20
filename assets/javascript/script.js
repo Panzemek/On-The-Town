@@ -27,8 +27,6 @@ var dateAsObject;
 
 $("#event-roulette").hide();
 $("#food-roulette").hide();
-$("#event-narrow-container").hide();
-$("#food-narrow-container").hide();
 
 buildDayList();
 function buildDayList() {
@@ -85,7 +83,8 @@ $("#datepicker").click(function () {
     dp.css("z-index", 1000);
 });
 
-
+let rpLat;
+let rpLon;
 
 var placeQueryUrl = "https://www.eventbriteapi.com/v3/events/search/?location.address=" + place + "&location.within=5km&expand=venue&token=QHBNEFWIRBGDKAUY44N7";
 
@@ -103,9 +102,9 @@ function randomEventPick(response) {
     // pulls time the event starts
     let rpTime = randomPick.start.local;
     // pulls the locations latitude
-    let rpLat = randomPick.venue.latitude;
+    rpLat = randomPick.venue.latitude;
     // pulls the locations longitude
-    let rpLon = randomPick.venue.longitude;
+    rpLon = randomPick.venue.longitude;
     // pulls the url to eventbrite for actual event
     let rpEvent = randomPick.venue.address.resource_uri;
     // pulls name of the event
@@ -208,7 +207,7 @@ var restLng;
 
 function randomSeattleRestaurants() {
     
-    queryURL = "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+seattle&key=AIzaSyDF_fqwmBu3FLIxPBFJLXZuWD5l-23ts74"
+    queryURL = "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?location="+rpLat+","+rpLon+"&radius=2000&type=restaurant&keyword="+cuisineSearchString+"&key=AIzaSyDF_fqwmBu3FLIxPBFJLXZuWD5l-23ts74"
 
     $.ajax({  
         url: queryURL,
@@ -293,11 +292,11 @@ $("#event-roulette-button").click(buildEventResult);
 
 function buildEventResult() {
     $(this).off("click");
-    $("#event-narrow-container").hide();
     $("#event-result").hide();
     $("#event-roulette").show();
     $("#eventCarousel").carousel("cycle");
     $("#event-result").empty();
+    buildFoodResult();
 
     setTimeout(function () {
         $("#event-roulette").hide();
@@ -306,15 +305,10 @@ function buildEventResult() {
     }, 2000);
 }
 
-$("#narrow-event").click(function () {
-    $("#event-narrow-container").show();
-});
-
 $("#food-roulette-button").click(buildFoodResult);
 
 function buildFoodResult() {
     $(this).off("click");
-    $("#food-narrow-container").hide();
     $("#food-result").hide();
     $("#rest-hours").hide();
     $("#food-roulette").show();
@@ -329,13 +323,10 @@ function buildFoodResult() {
     }, 2000);
 }
 
-$("#narrow-food").click(function () {
-    $("#food-narrow-container").show();
-});
-
 // this puts cuisines checked in the menu into a string that works in google queryurl
 var cuisineSearchString = "";
 function getCheckedCuisines() {
+    cuisineSearchString = "";
     var checkedCuisines = document.getElementsByName("cuisineListItem");
     for(var i=0; i<checkedCuisines.length; i++) {
         if(checkedCuisines[i].type ==='checkbox' && checkedCuisines[i].checked === true) {
