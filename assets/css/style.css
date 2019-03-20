@@ -1,7 +1,8 @@
 body {
     margin: 0;
     padding: 0;
-    background-image: url("../images/dark-paths.png");
+    /* background-color: lightgray; */
+    /* background-image: url("../images/dark-paths.png"); */
 }
 
 .eventWheel {
@@ -17,7 +18,7 @@ body {
     position: absolute;
     display: block;
     width: 100%;
-    height: 300px;
+    height: 100%;
     top: 0;
     right: 0;
     left: 0;
@@ -71,7 +72,8 @@ body {
     margin-right: 3px;
     height: 45px;
     width: 45px;
-    background: rgb(100, 136, 255);
+    /* background: rgb(100, 136, 255); */
+    background: lightgray;
     border: 1px solid black;
 }
 
@@ -91,6 +93,11 @@ body {
     font-family: 'Caveat', cursive;
 }
 
+/* Location button color */
+#dropdownMenuButton {
+background-color: lightgray;
+}
+
 .form-group {
     margin-top: 4px;
     width: 382px;
@@ -105,12 +112,13 @@ margin-top: 10px;
     margin-bottom: 10px;
     justify-content: space-between;
     background: black;
+
 }
 
 .roulette-container {
     width: 49.8%;
     height: 300px;
-    background: rgb(212, 97, 97);
+    background: white;
     justify-content: center;
     align-items: center;
 }
@@ -130,7 +138,8 @@ margin-top: 10px;
 }
 
 #rest-result-link {
-    background-color: #37bc32;
+    /* background-color: #37bc32; */
+    background-color: gray;
     color: white;
     padding: 5px;
     text-decoration: none;

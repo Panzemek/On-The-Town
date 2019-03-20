@@ -22,13 +22,15 @@
 </head>
 
 <body>
+   
     <!-- Header elements -->
     <canvas id="canvas-image-blending"></canvas>
-    <h1 id="title-text">Date Nite Roulette</h1>
-    <div class="flex-container all-content-center">
-        <div class="flex-container all-content-width">
+    <!-- <h1 id="title-text">Date Nite Roulette</h1> -->
+    <!-- <div class="flex-container all-content-center">
+        <div class="flex-container all-content-width"> -->
+            <div id=headerBox>
             <div id="header" class="flex-container">
-
+                        <h1 id="title-text">Date Nite Roulette</h1>
                 <!-- Header container for when and where selection -->
                 <div id="when-where-content" class="flex-container">
                     <!-- Header element for list of days selection -->
@@ -48,7 +50,7 @@
                             <p>Where's your night?</p>
                         </div>
                         <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                               Select location
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id=dropdownItems>
@@ -66,6 +68,10 @@
                     </div>
                 </div>
             </div>
+            </div>
+        
+        <div class="flex-container all-content-center">
+        <div class="flex-container all-content-width">
             <!-- Whole roulette results container -->
             <div id="roulette-elements-container" class="flex-container">
 
@@ -386,6 +392,7 @@
             </div>
         </div>
     </div>
+
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="assets/jquery-ui-1.12.1.custom/external/jquery/jquery.js"></script>
