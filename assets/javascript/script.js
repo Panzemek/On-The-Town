@@ -27,8 +27,6 @@ var dateAsObject;
 
 $("#event-roulette").hide();
 $("#food-roulette").hide();
-$("#event-narrow-container").hide();
-$("#food-narrow-container").hide();
 
 buildDayList();
 function buildDayList() {
@@ -61,7 +59,6 @@ $(".day-box").click(function () {
     $(".day-box").attr("data-selected", "false");
     $(this).attr("data-selected", "true");
     dateAsString = $(this).attr("data-date");
-    console.log(dateAsString);
 })
 
 $('html').click(function (e) {
@@ -69,7 +66,6 @@ $('html').click(function (e) {
         var dp = $("#datepicker");
         dp.datepicker('destroy');
         dp.html("<i class='fas fa-calendar-alt calendar-pop-button'></i>");
-        console.log(dateAsString);
     }
 });
 
@@ -84,7 +80,6 @@ $("#datepicker").click(function () {
     dp.css("position", "relative");
     dp.css("z-index", 1000);
 });
-
 // Location Dropdown
 var cities = ["Auburn", "Bellevue", "Bellingham", "Bothell", "Burien", "Edmonds", "Everett", "Federal Way", "Issaquah",  "Kent", "Kirkland", "Lynnwood", "Montlake Terrace", "Olympia", "Puyallup", "Redmond", "Renton", "Seattle", "Shoreline", "Snoqualmie","Spokane", "Tacoma", "Tukwila", "Woodinville"]
 
@@ -93,51 +88,6 @@ for(var i=0; i< cities.length;i++)
   $("#dropdownItems").append("<a href=>" + cities[i] + "<br>" + "</a>"); 
 }
 
-var placeQueryUrl = "https://www.eventbriteapi.com/v3/events/search/?location.address=" + place + "&location.within=5km&expand=venue&token=QHBNEFWIRBGDKAUY44N7";
-
-function randomEventPick(response) {
-    let arr = response.events;
-    //randomizer to choose one of the random events
-    let randomPick = arr[Math.floor(Math.random() * arr.length)];
-
-    // pulls summary of the event
-    let rpName = randomPick.summary;
-    // pulls the events image
-    let rpImageEv = randomPick.logo.url;
-    // pulls the events address
-    let rpLocation = randomPick.venue.address.address_1;
-    // pulls time the event starts
-    let rpTime = randomPick.start.local;
-    // pulls the locations latitude
-    let rpLat = randomPick.venue.latitude;
-    // pulls the locations longitude
-    let rpLon = randomPick.venue.longitude;
-    // pulls the url to eventbrite for actual event
-    let rpEvent = randomPick.venue.address.resource_uri;
-    // pulls name of the event
-    let rpEvName = randomPick.name.text;
-
-
-    
-
-    $("#event-result").empty();
-    $("#event-result").append("<a href=" + rpEvent + " target=_blank>" + rpEvName + "</a>")
-    $("#event-result").append("<p>" + rpTime + "</p>");
-    $("#event-result").append("<p>" + rpLocation + "</p>");
-    $("#event-result").append("<img src=" + rpImageEv + ">");
-
-
-    console.log(rpName);
-    console.log(rpImageEv);
-    console.log(rpLocation);
-    console.log(rpTime);
-    console.log(rpLat);
-    console.log(rpLon);
-    console.log(rpEvent);
-    console.log(rpEvName);
-}
-
-// object of all the categories that eventbrite recognizes and the code in the form of a number that is passed into the api in the form of a number
 var catObj = {
     "music": 103,
     "business & professional": 101,
@@ -161,52 +111,65 @@ var catObj = {
     "other": 199,
     "school Activites": 120
 }
+// -----------------------------------------------------------
+let rpLat;
+let rpLon;
+
+function randomEventPick() {
+    console.log("RAN EVENT PICK FUNCTION");
+    var place = "seattle";
+    var categories = "103";
+    var dateOfEvent = "2019-03-30"
+
+    // TODO:
+    // the api url we use to get info back from eventbrtire api
+    var dateQueryUrl = "https://www.eventbriteapi.com/v3/events/search/?sort_by=date&location.address="+place+"&location.within=10km&categories="+categories+"&start_date.range_start="+dateOfEvent+"T00%3A00%3A01&start_date.range_end="+dateOfEvent+"T23%3A59%3A59&expand=venue&token=QHBNEFWIRBGDKAUY44N7";
+
+    // ajax call
+    $.ajax({
+        url: dateQueryUrl,
+        method: "GET",
+    }).then(function (response) {
+        populateEvent(response);
+    })
+}
+
+function populateEvent(response) {
+    let arr = response.events;
+    //randomizer to choose one of the random events
+    let randomPick = arr[Math.floor(Math.random() * arr.length)];
+
+    // pulls summary of the event
+    let rpName = randomPick.summary;
+    // pulls the events image
+    let rpImageEv = randomPick.logo.url;
+    // pulls the events address
+    let rpLocation = randomPick.venue.address.address_1;
+    // pulls time the event starts
+    let rpTime = randomPick.start.local;
+    // pulls the locations latitude
+    rpLat = randomPick.venue.latitude;
+    // pulls the locations longitude
+    rpLon = randomPick.venue.longitude;
+    // pulls the url to eventbrite for actual event
+    let rpEvent = randomPick.venue.address.resource_uri;
+    // pulls name of the event
+    let rpEvName = randomPick.name.text;
 
 
-// variables for on click event
-var categories
-var place
-var dateOfEvent
-// user inputs 1 2 and 3
-var userI
-var userI2
-var userI3
+    
 
-// on click function that passes in info to api
-// $("#sub").on("click", function (event) {
-//     event.preventDefault();
-//     // gets category info
-//     userI = $("#cate").val().trim();
-//     console.log("userinput", userI);
-//     // takes category info and turns it into a value from object
-//     categories = catObj[userI];
-//     console.log("numberid", categories);
-//     // gets a date for the event
-//     userI2 = $("#dateOf").val();
-//     console.log("userinput2", userI2);
-//     dateOfEvent = userI2;
-//     // gets location info in the form of a city
-//     userI3 = $("#location-form").val().trim();
-//     place = userI3;
-// });
+    $("#event-result").empty();
+    $("#event-result").append("<a href=" + rpEvent + " target=_blank>" + rpEvName + "</a>")
+    $("#event-result").append("<p>" + rpTime + "</p>");
+    $("#event-result").append("<p>" + rpLocation + "</p>");
+    $("#event-result").append("<img src=" + rpImageEv + ">");
 
-var place = "seattle";
-var categories = "103";
-var dateOfEvent = "2019-03-30"
+    // console.log("EVENT COORDS: ", rpLat, rpLon);
 
-// TODO:
-// the api url we use to get info back from eventbrtire api
-var dateQueryUrl = "https://www.eventbriteapi.com/v3/events/search/?sort_by=date&location.address="+place+"&location.within=10km&categories="+categories+"&start_date.range_start="+dateOfEvent+"T00%3A00%3A01&start_date.range_end="+dateOfEvent+"T23%3A59%3A59&expand=venue&token=QHBNEFWIRBGDKAUY44N7";
+}
 
-// ajax call
-$.ajax({
-    url: dateQueryUrl,
-    method: "GET",
-}).then(function (response) {
-    console.log(response)
-    randomEventPick(response);
-})
-
+// -----------------------------------------------------------------------------------
 // Google API below
 
 var restLat;
@@ -214,7 +177,9 @@ var restLng;
 
 function randomSeattleRestaurants() {
     
-    queryURL = "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+seattle&key=AIzaSyDF_fqwmBu3FLIxPBFJLXZuWD5l-23ts74"
+    queryURL = "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?location="+rpLat+","+rpLon+"&radius=2000&type=restaurant&keyword="+cuisineSearchString+"&key=AIzaSyDF_fqwmBu3FLIxPBFJLXZuWD5l-23ts74"
+
+    // console.log("COORDS USED FOR REST SEARCH: ", rpLat, rpLon);
 
     $.ajax({  
         url: queryURL,
@@ -243,7 +208,6 @@ function pullRestaurantInfo(restID) {
     }).then(function(response){
         restLat = response.result.geometry.location.lat;
         restLng = response.result.geometry.location.lng;
-        console.log(restLat, restLng);
         populateRestaurantInfo(response);
     });
 }
@@ -256,7 +220,7 @@ function populateRestaurantInfo(response) {
     let rpImgRef = item.photos[0].photo_reference;
     let rpAddress = item.vicinity;
     
-    let imgLink = "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/photo?maxheight=200&photoreference="+rpImgRef+"&key=AIzaSyDF_fqwmBu3FLIxPBFJLXZuWD5l-23ts74";
+    let imgLink = "https://maps.googleapis.com/maps/api/place/photo?maxheight=200&photoreference="+rpImgRef+"&key=AIzaSyDF_fqwmBu3FLIxPBFJLXZuWD5l-23ts74";
 
     $("#mon").text(item.opening_hours.weekday_text[0]);
     $("#tue").text(item.opening_hours.weekday_text[1]);
@@ -288,34 +252,30 @@ let restaurantImages = {
 }
 
 buildEventResult();
-buildFoodResult();
 
 $("#event-roulette-button").click(buildEventResult);
 
 function buildEventResult() {
-    $(this).off("click");
-    $("#event-narrow-container").hide();
+    $("#event-roulette-button").off("click");
     $("#event-result").hide();
     $("#event-roulette").show();
     $("#eventCarousel").carousel("cycle");
     $("#event-result").empty();
+    randomEventPick();
+    
 
     setTimeout(function () {
         $("#event-roulette").hide();
         $("#event-result").show();
-        $("#event-roulette-button").on("click", buildEventResult);
+        $("#event-roulette-button").unbind('click').on("click", buildEventResult);
+        buildFoodResult();
     }, 2000);
 }
-
-$("#narrow-event").click(function () {
-    $("#event-narrow-container").show();
-});
 
 $("#food-roulette-button").click(buildFoodResult);
 
 function buildFoodResult() {
-    $(this).off("click");
-    $("#food-narrow-container").hide();
+    $("#food-roulette-button").off("click");
     $("#food-result").hide();
     $("#rest-hours").hide();
     $("#food-roulette").show();
@@ -326,22 +286,19 @@ function buildFoodResult() {
         $("#food-roulette").hide();
         $("#food-result").show();
         $("#rest-hours").show();
-        $("#food-roulette-button").on("click", buildFoodResult);
+        $("#food-roulette-button").unbind('click').on("click", buildFoodResult);
     }, 2000);
 }
-
-$("#narrow-food").click(function () {
-    $("#food-narrow-container").show();
-});
 
 // this puts cuisines checked in the menu into a string that works in google queryurl
 var cuisineSearchString = "";
 function getCheckedCuisines() {
+    cuisineSearchString = "";
     var checkedCuisines = document.getElementsByName("cuisineListItem");
     for(var i=0; i<checkedCuisines.length; i++) {
         if(checkedCuisines[i].type ==='checkbox' && checkedCuisines[i].checked === true) {
             cuisineSearchString += checkedCuisines[i].value + "+";
-            console.log(cuisineSearchString);
+            // console.log(cuisineSearchString);
         }
     }
 }

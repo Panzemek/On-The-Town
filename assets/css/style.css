@@ -171,12 +171,12 @@ margin-top: 10px;
 }
 
 .narrow-text-div {
-    margin-top: 3px;
+    margin-top: 10px;
     color: rgb(175, 175, 175);
 }
 
 #narrow-down-container{
-    margin-top: 10px;
+    margin-top: 3px;
     margin-bottom: 10px;
     justify-content: space-around;
 }
