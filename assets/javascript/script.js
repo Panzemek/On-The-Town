@@ -207,7 +207,7 @@ var restLat;
 var restLng;
 
 function randomSeattleRestaurants() {
-
+    
     queryURL = "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+seattle&key=AIzaSyDF_fqwmBu3FLIxPBFJLXZuWD5l-23ts74"
 
     $.ajax({  
@@ -268,7 +268,7 @@ function populateRestaurantInfo(response) {
 
     $("#food-result").empty();
     $("#food-result").append("<p class=rest-result-text><a id=rest-result-link href="+rpLink+" target=_blank>"+rpName+"</a> &nbsp "+rpLocation+"</p><br><p class=rest-result-text>"+rpAddress+"</p>");
-    $("#food-result").append("<img id=rest-result-img src="+imgLink+">");
+    $("#food-result").append("<img id=rest-result-img src="+imgLink+" alt='restaurant image'>");
 
 }
 
@@ -333,3 +333,16 @@ function buildFoodResult() {
 $("#narrow-food").click(function () {
     $("#food-narrow-container").show();
 });
+
+// this puts cuisines checked in the menu into a string that works in google queryurl
+var cuisineSearchString = "";
+function getCheckedCuisines() {
+    var checkedCuisines = document.getElementsByName("cuisineListItem");
+    for(var i=0; i<checkedCuisines.length; i++) {
+        if(checkedCuisines[i].type ==='checkbox' && checkedCuisines[i].checked === true) {
+            cuisineSearchString += checkedCuisines[i].value + "+";
+            console.log(cuisineSearchString);
+        }
+    }
+}
+
