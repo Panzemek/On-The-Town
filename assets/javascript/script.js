@@ -83,8 +83,18 @@ $("#datepicker").click(function () {
     dp.css("z-index", 1000);
 });
 
+
+// Location Dropdown
+var cities = ["Auburn", "Bellevue", "Bellingham", "Bothell", "Burien", "Edmonds", "Everett", "Federal Way", "Issaquah",  "Kent", "Kirkland", "Lynnwood", "Montlake Terrace", "Olympia", "Puyallup", "Redmond", "Renton", "Seattle", "Shoreline", "Snoqualmie","Spokane", "Tacoma", "Tukwila", "Woodinville"]
+
+for(var i=0; i< cities.length;i++)
+{
+  $("#dropdownItems").append("<a href=>" + cities[i] + "<br>" + "</a>"); 
+}
+
 let rpLat;
 let rpLon;
+
 
 var placeQueryUrl = "https://www.eventbriteapi.com/v3/events/search/?location.address=" + place + "&location.within=5km&expand=venue&token=QHBNEFWIRBGDKAUY44N7";
 
@@ -226,11 +236,6 @@ function randomRestaurantPick(response) {
 
     pullRestaurantInfo(restID)
 }
-
-// for(var i=0; i< neighborhoodArr.length;i++)
-// {
-//   $("#dropdownItems").append("<a href=>" + neighborhoodArr[i] + "<br>" + "</a>"); 
-// }
 
 function pullRestaurantInfo(restID) {
     let QueryUrl = "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/details/json?placeid="+restID+"&key=AIzaSyDF_fqwmBu3FLIxPBFJLXZuWD5l-23ts74";
