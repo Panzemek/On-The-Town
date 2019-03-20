@@ -73,7 +73,6 @@ body {
     width: 45px;
     background: rgb(100, 136, 255);
     border: 1px solid black;
-   
 }
 
 [data-selected="true"]{
