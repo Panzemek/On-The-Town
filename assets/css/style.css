@@ -120,6 +120,38 @@ margin-top: 10px;
     height: 100%;
 }
 
+
+/* styling options for food result */
+#food-result {
+    padding: 5px;
+}
+
+.rest-result-text {
+    text-align: center;
+}
+
+#rest-result-link {
+    background-color: #37bc32;
+    color: white;
+    padding: 5px;
+    text-decoration: none;
+    border-radius: 5px;
+    border: solid thin #40284A;
+}
+
+#rest-result-link:hover {
+    background-color: #40284A;
+  }
+
+#food-result {
+    color: #40284A;
+}
+
+#rest-result-img {
+    border: solid thin #40284A;
+    margin: 10px;
+}
+
 .column-centered-container {
     justify-content: space-around;
 }

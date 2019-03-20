@@ -137,45 +137,68 @@ $.ajax({
     randomEventPick(response);
 })
 
-// Zomato API below
+// Google API below
 
-let cuisineArr = ["American", "Italian", "Chinese", "Japanese", "Thai", "Vietnamese", "Mediterranean", "Mexican", "African", "Indian"]
-let neighborhoodArr = ["Downtown", "University District", "Ballard", "Belltown", "Central District", "Fremont", "Greenwood/Phinney", "Magnolia", "Columbia City", "Broadview/Bitter Lake", "Interbay", "Beacon Hill", "Sodo", "Maple Leaf", "Ravenna", "Capitol Hill", "West Seattle", "International District", "Wallingford", "Georgetown", "Lake City", "Northgate", "South Lake Union", "Queen Anne: Lower", "White Center", "Queen Anne: Upper", "Rainier Valley", "Madison Park", "Green Lake", "Madrona/Leschi"]
+function randomSeattleRestaurants() {
 
-function randomRestaurantPick(response) {
-    let arr = response.restaurants;
-    let randomPick = arr[Math.floor(Math.random() * arr.length)];
+    queryURL = "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+seattle&key=AIzaSyDF_fqwmBu3FLIxPBFJLXZuWD5l-23ts74"
 
-    let rpName = randomPick.restaurant.name;
-    let rpLink = randomPick.restaurant.url;
-    let rpCuisine = randomPick.restaurant.cuisines;
-    let rpLocation = randomPick.restaurant.location.locality_verbose;
-
-    nameLink = $("<a href=" + rpLink + " target=_blank>" + rpName + "</a>");
-    rpImg = $("<img src=" + randomPick.restaurant.thumb + ">")
-
-    $("#food-result").empty();
-    $("#food-result").append("<p><a href=" + rpLink + " target=_blank>" + rpName + "</a></p>");
-    $("#food-result").append("<p>" + rpCuisine + "</p>");
-    $("#food-result").append("<p>" + rpLocation + "</p>");
-    $("#food-result").append(rpImg);
+    $.ajax({  
+        url: queryURL,
+        dataType: 'json',
+        method: "GET",
+    }).then(function(response){
+        randomRestaurantPick(response);
+    });
+    
 }
 
-function pullRestaurantInfo(param) {
-    let QueryUrl = "https://developers.zomato.com/api/v2.1/search?q=" + param + "&cities?q=seattle";
+function randomRestaurantPick(response) {
+    let arr = response.results;
+    let randomPick = arr[Math.floor(Math.random() * arr.length)];
+    let restID = randomPick.place_id;
 
-    $.ajax({
+    pullRestaurantInfo(restID)
+}
+
+function pullRestaurantInfo(restID) {
+
+    let QueryUrl = "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/details/json?placeid="+restID+"&key=AIzaSyDF_fqwmBu3FLIxPBFJLXZuWD5l-23ts74";
+
+    $.ajax({  
         url: QueryUrl,
         dataType: 'json',
         method: "GET",
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader('user-key',
-                'c676a8f84163c31b3e525853910c4a76')
-        }
-    }).then(function (response) {
-        randomRestaurantPick(response);
+    }).then(function(response){
+        populateRestaurantInfo(response);
     });
 }
+
+function populateRestaurantInfo(response) {
+    let item = response.result;
+    let rpName = item.name;
+    let rpLink = item.website;
+    let rpLocation = item.address_components[2].long_name;
+    let rpImgRef = item.photos[0].photo_reference;
+    let rpAddress = item.vicinity;
+    
+    let imgLink = "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/photo?maxheight=200&photoreference="+rpImgRef+"&key=AIzaSyDF_fqwmBu3FLIxPBFJLXZuWD5l-23ts74";
+
+    $("#mon").text(item.opening_hours.weekday_text[0]);
+    $("#tue").text(item.opening_hours.weekday_text[1]);
+    $("#wed").text(item.opening_hours.weekday_text[2]);
+    $("#thurs").text(item.opening_hours.weekday_text[3]);
+    $("#fri").text(item.opening_hours.weekday_text[4]);
+    $("#sat").text(item.opening_hours.weekday_text[5]);
+    $("#sun").text(item.opening_hours.weekday_text[6]);
+
+    $("#food-result").empty();
+    $("#food-result").append("<p class=rest-result-text><a id=rest-result-link href="+rpLink+" target=_blank>"+rpName+"</a> &nbsp "+rpLocation+"</p><br><p class=rest-result-text>"+rpAddress+"</p>");
+    $("#food-result").append("<img id=rest-result-img src="+imgLink+">");
+
+}
+
+let cuisineArr = ["American", "Italian", "Chinese", "Japanese", "Thai", "Vietnamese", "Mediterranean", "Mexican", "African", "Indian"]
 
 let restaurantImages = {
     American: "assets/images/restaurants/american.jpg",
@@ -220,13 +243,15 @@ function buildFoodResult() {
     $(this).off("click");
     $("#food-narrow-container").hide();
     $("#food-result").hide();
+    $("#rest-hours").hide();
     $("#food-roulette").show();
     $("#restaurantCarousel").carousel("cycle");
-    pullRestaurantInfo("restaurant");
+    randomSeattleRestaurants("restaurant");
 
     setTimeout(function () {
         $("#food-roulette").hide();
         $("#food-result").show();
+        $("#rest-hours").show();
         $("#food-roulette-button").on("click", buildFoodResult);
     }, 2000);
 }
