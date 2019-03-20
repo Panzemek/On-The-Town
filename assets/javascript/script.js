@@ -62,27 +62,50 @@ $(".day-box").click(function () {
     $(this).attr("data-selected", "true");
 })
 
-var placeQueryUrl = "https://www.eventbriteapi.com/v3/events/search/?location.address=" + place + "&location.within=5km&expand=venue&token=QHBNEFWIRBGDKAUY44N7";
-
+// function that pulls a random event from the eventbrite api within the specified parameters (location, date, event type)
 function randomEventPick(response) {
     let arr = response.events;
+    //randomizer to choose one of the random events
     let randomPick = arr[Math.floor(Math.random() * arr.length)];
 
+    // pulls summary of the event
     let rpName = randomPick.summary;
-    let rpImage = randomPick.logo.url;
+    // pulls the events image
+    let rpImageEv = randomPick.logo.url;
+    // pulls the events address
     let rpLocation = randomPick.venue.address.address_1;
+    // pulls time the event starts
     let rpTime = randomPick.start.local;
+    // pulls the locations latitude
     let rpLat = randomPick.venue.latitude;
+    // pulls the locations longitude
     let rpLon = randomPick.venue.longitude;
+    // pulls the url to eventbrite for actual event
+    let rpEvent = randomPick.venue.address.resource_uri;
+    // pulls name of the event
+    let rpEvName = randomPick.name.text;
+
+
+    
+
+    $("#event-result").empty();
+    $("#event-result").append("<a href=" + rpEvent + " target=_blank>" + rpEvName + "</a>")
+    $("#event-result").append("<p>" + rpTime + "</p>");
+    $("#event-result").append("<p>" + rpLocation + "</p>");
+    $("#event-result").append("<img src=" + rpImageEv + ">");
+
 
     console.log(rpName);
-    console.log(rpImage);
+    console.log(rpImageEv);
     console.log(rpLocation);
     console.log(rpTime);
     console.log(rpLat);
     console.log(rpLon);
+    console.log(rpEvent);
+    console.log(rpEvName);
 }
 
+// object of all the categories that eventbrite recognizes and the code in the form of a number that is passed into the api in the form of a number
 var catObj = {
     "music": 103,
     "business & professional": 101,
@@ -107,30 +130,45 @@ var catObj = {
     "school Activites": 120
 }
 
+
+// variables for on click event
 var categories
 var place
+var dateOfEvent
+// user inputs 1 2 and 3
 var userI
 var userI2
 var userI3
-var dateOfEvent
-$("#sub").on("click", function (event) {
-    event.preventDefault();
-    userI = $("#cate").val().trim();
-    console.log("userinput", userI);
-    categories = catObj[userI];
-    console.log("numberid", categories);
-    userI2 = $("#dateOf").val();
-    console.log("userinput2", userI2);
-    dateOfEvent = userI2;
-    userI3 = $("#loc").val().trim();
-    place = userI3;
-});
 
-var dateQueryUrl = "https://www.eventbriteapi.com/v3/events/search/?sort_by=date&location.address=" + place + "&location.within=10km&categories=" + categories + "&start_date.range_start=" + dateOfEvent + "T00%3A00%3A01&start_date.range_end=" + dateOfEvent + "T23%3A59%3A59&expand=venue&token=QHBNEFWIRBGDKAUY44N7";
+// on click function that passes in info to api
+// $("#sub").on("click", function (event) {
+//     event.preventDefault();
+//     // gets category info
+//     userI = $("#cate").val().trim();
+//     console.log("userinput", userI);
+//     // takes category info and turns it into a value from object
+//     categories = catObj[userI];
+//     console.log("numberid", categories);
+//     // gets a date for the event
+//     userI2 = $("#dateOf").val();
+//     console.log("userinput2", userI2);
+//     dateOfEvent = userI2;
+//     // gets location info in the form of a city
+//     userI3 = $("#location-form").val().trim();
+//     place = userI3;
+// });
 
+var place = "seattle";
+var categories = "103";
+var dateOfEvent = "2019-03-30"
+
+// TODO:
+// the api url we use to get info back from eventbrtire api
+var dateQueryUrl = "https://www.eventbriteapi.com/v3/events/search/?sort_by=date&location.address="+place+"&location.within=10km&categories="+categories+"&start_date.range_start="+dateOfEvent+"T00%3A00%3A01&start_date.range_end="+dateOfEvent+"T23%3A59%3A59&expand=venue&token=QHBNEFWIRBGDKAUY44N7";
+
+// ajax call
 $.ajax({
     url: dateQueryUrl,
-
     method: "GET",
 }).then(function (response) {
     console.log(response)
