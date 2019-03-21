@@ -158,8 +158,6 @@ function populateEvent(response) {
 
     $("#event-result").empty();
     $("#event-result").append("<p class='eventResultText'> <a id=eventResultLink href=" + rpEvent + " target=_blank>" + rpEvName + "</a> </p> <br> <p class='eventResultText'>" + rpTime + "</p> <br> <p class='eventResultText'>" + rpLocation + "</p>" )
-    // $("#event-result").append("<p>" + rpTime + "</p>");
-    // $("#event-result").append("<p class='eventResultText'>" + rpLocation + "</p>");
     $("#event-result").append("<img id=event-result-img src=" + rpImageEv + ">");
 
     // console.log("EVENT COORDS: ", rpLat, rpLon);
