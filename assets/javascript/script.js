@@ -166,7 +166,7 @@ function populateEvent(response) {
     let rpName = randomPick.summary;
     let rpImageEv = randomPick.logo.url;
     let rpLocation = randomPick.venue.address.address_1;
-    let rpTime = randomPick.start.local;
+    let rpTime = moment(randomPick.start.local).calendar();
     rpLat = randomPick.venue.latitude;
     rpLon = randomPick.venue.longitude;
     let rpEvent = randomPick.venue.address.resource_uri;
