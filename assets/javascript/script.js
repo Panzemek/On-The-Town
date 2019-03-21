@@ -80,6 +80,7 @@ $("#datepicker").click(function () {
     dp.css("position", "relative");
     dp.css("z-index", 1000);
 });
+
 // Location Dropdown
 var cities = ["Auburn", "Bellevue", "Bellingham", "Bothell", "Burien", "Edmonds", "Everett", "Federal Way", "Issaquah",  "Kent", "Kirkland", "Lynnwood", "Montlake Terrace", "Olympia", "Puyallup", "Redmond", "Renton", "Seattle", "Shoreline", "Snoqualmie","Spokane", "Tacoma", "Tukwila", "Woodinville"]
 
@@ -114,11 +115,31 @@ var catObj = {
 
 let rpLat;
 let rpLon;
+var categories ="";
 
+function getCategoryCheckboxes() {
+    var evCheckedCats = document.forms['event-narrow-list'].elements['eventListItem[]'];
+    console.log("Event List Items: ", evCheckedCats);
+    let selArr = [];
+    categories ="";
+    for ( let i = 0; i < evCheckedCats.length; i++) {
+        if (evCheckedCats[i].checked) {
+            selArr.push(evCheckedCats[i].value);
+            console.log("Selection Array: ", selArr);
+            categories = selArr.join("%2C");
+            console.log("categories: ", categories);
+            
+        }
+    }
+}
+
+// Eventbrite API call
 function randomEventPick() {
+
+    getCategoryCheckboxes();
    
     var place = "seattle";
-    var categories = "103";
+
     var dateOfEvent;
     convDate = moment(dateAsString).format("YYYY-MM-DD");
     if (convDate) {
@@ -127,10 +148,9 @@ function randomEventPick() {
         dateOfEvent = moment();
     }
 
-    // the api url we use to get info back from eventbrtire api
     var dateQueryUrl = "https://www.eventbriteapi.com/v3/events/search/?sort_by=date&location.address="+place+"&location.within=10km&categories="+categories+"&start_date.range_start="+dateOfEvent+"T00%3A00%3A01&start_date.range_end="+dateOfEvent+"T23%3A59%3A59&expand=venue&token=QHBNEFWIRBGDKAUY44N7";
+    console.log("EV query: " + dateQueryUrl);
 
-    // ajax call
     $.ajax({
         url: dateQueryUrl,
         method: "GET",
@@ -158,14 +178,35 @@ function populateEvent(response) {
 
 }
 
-// Google API below
-
 var restLat;
 var restLng;
+let cuisineSearchString ="";
 
+function getFoodCheckboxes() {
+    var cuisines = document.forms['food-narrow-list'].elements['cuisineListItem[]'];
+    console.log("Cuisine List Items: ", cuisines);
+    let selArr = [];
+    cuisineSearchString ="";
+    for ( let i = 0; i < cuisines.length; i++) {
+        if (cuisines[i].checked) {
+            selArr.push(cuisines[i].value);
+            console.log("Selection Array: ", selArr);
+            cuisineSearchString = selArr.join("+");
+            console.log("Cuisine Search String: ", cuisineSearchString);
+            
+        }
+    }
+}
+
+// Google Places API call
 function randomSeattleRestaurants() {
     
+    getFoodCheckboxes();
+    console.log("Search string just before query url: ", cuisineSearchString);
+    
     queryURL = "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?location="+rpLat+","+rpLon+"&radius=2000&type=restaurant&keyword="+cuisineSearchString+"&key=AIzaSyDF_fqwmBu3FLIxPBFJLXZuWD5l-23ts74"
+
+    console.log("QueryUrl: " + queryURL);
 
     $.ajax({  
         url: queryURL,
@@ -274,17 +315,4 @@ function buildFoodResult() {
         $("#rest-hours").show();
         $("#food-roulette-button").unbind('click').on("click", buildFoodResult);
     }, 2000);
-}
-
-// this puts cuisines checked in the menu into a string that works in google queryurl
-var cuisineSearchString = "";
-function getCheckedCuisines() {
-    cuisineSearchString = "";
-    var checkedCuisines = document.getElementsByName("cuisineListItem");
-    for(var i=0; i<checkedCuisines.length; i++) {
-        if(checkedCuisines[i].type ==='checkbox' && checkedCuisines[i].checked === true) {
-            cuisineSearchString += checkedCuisines[i].value + "+";
-            console.log(cuisineSearchString);
-        }
-    }
 }
