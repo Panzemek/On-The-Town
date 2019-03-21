@@ -249,13 +249,16 @@ function buildEventResult() {
     $("#event-result").empty();
     randomEventPick();
     
+    setTimeout(function () {
+        buildFoodResult();
+    }, 400);
 
     setTimeout(function () {
         $("#event-roulette").hide();
         $("#event-result").show();
         $("#event-roulette-button").unbind('click').on("click", buildEventResult);
-        buildFoodResult();
     }, 2000);
+    
 }
 
 $("#food-roulette-button").click(buildFoodResult);
