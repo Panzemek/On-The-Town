@@ -82,11 +82,10 @@ $("#datepicker").click(function () {
 });
 
 // Location Dropdown
-var cities = ["Auburn", "Bellevue", "Bellingham", "Bothell", "Burien", "Edmonds", "Everett", "Federal Way", "Issaquah",  "Kent", "Kirkland", "Lynnwood", "Montlake Terrace", "Olympia", "Puyallup", "Redmond", "Renton", "Seattle", "Shoreline", "Snoqualmie","Spokane", "Tacoma", "Tukwila", "Woodinville"]
+var cities = ["Auburn", "Bellevue", "Bellingham", "Bothell", "Burien", "Edmonds", "Everett", "Federal Way", "Issaquah", "Kent", "Kirkland", "Lynnwood", "Montlake Terrace", "Olympia", "Puyallup", "Redmond", "Renton", "Seattle", "Shoreline", "Snoqualmie", "Spokane", "Tacoma", "Tukwila", "Woodinville"]
 
-for(var i=0; i< cities.length;i++)
-{
-  $("#dropdownItems").append("<a href=>" + cities[i] + "<br>" + "</a>"); 
+for (var i = 0; i < cities.length; i++) {
+    $("#dropdownItems").append("<a href=>" + cities[i] + "<br>" + "</a>");
 }
 
 var catObj = {
@@ -115,20 +114,20 @@ var catObj = {
 
 let rpLat;
 let rpLon;
-var categories ="";
+var categories = "";
 
 function getCategoryCheckboxes() {
     var evCheckedCats = document.forms['event-narrow-list'].elements['eventListItem[]'];
     console.log("Event List Items: ", evCheckedCats);
     let selArr = [];
-    categories ="";
-    for ( let i = 0; i < evCheckedCats.length; i++) {
+    categories = "";
+    for (let i = 0; i < evCheckedCats.length; i++) {
         if (evCheckedCats[i].checked) {
             selArr.push(evCheckedCats[i].value);
             console.log("Selection Array: ", selArr);
             categories = selArr.join("%2C");
             console.log("categories: ", categories);
-            
+
         }
     }
 }
@@ -137,7 +136,7 @@ function getCategoryCheckboxes() {
 function randomEventPick() {
 
     getCategoryCheckboxes();
-   
+
     var place = "seattle";
 
     var dateOfEvent;
@@ -148,7 +147,7 @@ function randomEventPick() {
         dateOfEvent = moment();
     }
 
-    var dateQueryUrl = "https://www.eventbriteapi.com/v3/events/search/?sort_by=date&location.address="+place+"&location.within=10km&categories="+categories+"&start_date.range_start="+dateOfEvent+"T00%3A00%3A01&start_date.range_end="+dateOfEvent+"T23%3A59%3A59&expand=venue&token=QHBNEFWIRBGDKAUY44N7";
+    var dateQueryUrl = "https://www.eventbriteapi.com/v3/events/search/?sort_by=date&location.address=" + place + "&location.within=10km&categories=" + categories + "&start_date.range_start=" + dateOfEvent + "T00%3A00%3A01&start_date.range_end=" + dateOfEvent + "T23%3A59%3A59&expand=venue&token=QHBNEFWIRBGDKAUY44N7";
     console.log("EV query: " + dateQueryUrl);
 
     $.ajax({
@@ -156,7 +155,7 @@ function randomEventPick() {
         method: "GET",
     }).then(function (response) {
         populateEvent(response);
-    })
+    }).then(randomSeattleRestaurants);
 }
 
 function populateEvent(response) {
@@ -173,49 +172,49 @@ function populateEvent(response) {
     let rpEvName = randomPick.name.text;
 
     $("#event-result").empty();
-    $("#event-result").append("<p class='eventResultText'> <a id=eventResultLink href=" + rpEvent + " target=_blank>" + rpEvName + "</a> </p> <br> <p class='eventResultText'>" + rpTime + "</p> <br> <p class='eventResultText'>" + rpLocation + "</p>" )
+    $("#event-result").append("<p class='eventResultText'> <a id=eventResultLink href=" + rpEvent + " target=_blank>" + rpEvName + "</a> </p> <br> <p class='eventResultText'>" + rpTime + "</p> <br> <p class='eventResultText'>" + rpLocation + "</p>")
     $("#event-result").append("<img id=event-result-img src=" + rpImageEv + ">");
 
 }
 
 var restLat;
 var restLng;
-let cuisineSearchString ="";
+let cuisineSearchString = "";
 
 function getFoodCheckboxes() {
     var cuisines = document.forms['food-narrow-list'].elements['cuisineListItem[]'];
     console.log("Cuisine List Items: ", cuisines);
     let selArr = [];
-    cuisineSearchString ="";
-    for ( let i = 0; i < cuisines.length; i++) {
+    cuisineSearchString = "";
+    for (let i = 0; i < cuisines.length; i++) {
         if (cuisines[i].checked) {
             selArr.push(cuisines[i].value);
             console.log("Selection Array: ", selArr);
             cuisineSearchString = selArr.join("+");
             console.log("Cuisine Search String: ", cuisineSearchString);
-            
+
         }
     }
 }
 
 // Google Places API call
 function randomSeattleRestaurants() {
-    
+
     getFoodCheckboxes();
     console.log("Search string just before query url: ", cuisineSearchString);
-    
-    queryURL = "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?location="+rpLat+","+rpLon+"&radius=2000&type=restaurant&keyword="+cuisineSearchString+"&key=AIzaSyDF_fqwmBu3FLIxPBFJLXZuWD5l-23ts74"
+
+    queryURL = "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?location=" + rpLat + "," + rpLon + "&radius=2000&type=restaurant&keyword=" + cuisineSearchString + "&key=AIzaSyDF_fqwmBu3FLIxPBFJLXZuWD5l-23ts74"
 
     console.log("QueryUrl: " + queryURL);
 
-    $.ajax({  
+    $.ajax({
         url: queryURL,
         dataType: 'json',
         method: "GET",
-    }).then(function(response){
+    }).then(function (response) {
         randomRestaurantPick(response);
     });
-    
+
 }
 
 function randomRestaurantPick(response) {
@@ -227,12 +226,12 @@ function randomRestaurantPick(response) {
 }
 
 function pullRestaurantInfo(restID) {
-    let QueryUrl = "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/details/json?placeid="+restID+"&key=AIzaSyDF_fqwmBu3FLIxPBFJLXZuWD5l-23ts74";
-    $.ajax({  
+    let QueryUrl = "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/details/json?placeid=" + restID + "&key=AIzaSyDF_fqwmBu3FLIxPBFJLXZuWD5l-23ts74";
+    $.ajax({
         url: QueryUrl,
         dataType: 'json',
         method: "GET",
-    }).then(function(response){
+    }).then(function (response) {
         restLat = response.result.geometry.location.lat;
         restLng = response.result.geometry.location.lng;
         populateRestaurantInfo(response);
@@ -246,8 +245,8 @@ function populateRestaurantInfo(response) {
     let rpLocation = item.address_components[2].long_name;
     let rpImgRef = item.photos[0].photo_reference;
     let rpAddress = item.vicinity;
-    
-    let imgLink = "https://maps.googleapis.com/maps/api/place/photo?maxheight=200&photoreference="+rpImgRef+"&key=AIzaSyDF_fqwmBu3FLIxPBFJLXZuWD5l-23ts74";
+
+    let imgLink = "https://maps.googleapis.com/maps/api/place/photo?maxheight=200&photoreference=" + rpImgRef + "&key=AIzaSyDF_fqwmBu3FLIxPBFJLXZuWD5l-23ts74";
 
     $("#mon").text(item.opening_hours.weekday_text[0]);
     $("#tue").text(item.opening_hours.weekday_text[1]);
@@ -258,8 +257,8 @@ function populateRestaurantInfo(response) {
     $("#sun").text(item.opening_hours.weekday_text[6]);
 
     $("#food-result").empty();
-    $("#food-result").append("<p class=rest-result-text><a id=rest-result-link href="+rpLink+" target=_blank>"+rpName+"</a> </p> <br> <p class=rest-result-text> "+rpLocation+"</p><br><p class=rest-result-text>"+rpAddress+"</p>");
-    $("#food-result").append("<img id=rest-result-img src="+imgLink+" alt='restaurant image'>");
+    $("#food-result").append("<p class=rest-result-text><a id=rest-result-link href=" + rpLink + " target=_blank>" + rpName + "</a> </p> <br> <p class=rest-result-text> " + rpLocation + "</p><br><p class=rest-result-text>" + rpAddress + "</p>");
+    $("#food-result").append("<img id=rest-result-img src=" + imgLink + " alt='restaurant image'>");
 
 }
 
@@ -283,39 +282,42 @@ buildEventResult();
 $("#event-roulette-button").click(buildEventResult);
 
 function buildEventResult() {
+    randomEventPick();
+    foodRouletteSpin();
+    eventRouletteSpin();
+}
+function eventRouletteSpin() {
     $("#event-roulette-button").off("click");
     $("#event-result").hide();
     $("#event-roulette").show();
     $("#eventCarousel").carousel("cycle");
     $("#event-result").empty();
-    randomEventPick();
-    
-    setTimeout(function () {
-        buildFoodResult();
-    }, 400);
 
     setTimeout(function () {
         $("#event-roulette").hide();
         $("#event-result").show();
         $("#event-roulette-button").unbind('click').on("click", buildEventResult);
-    }, 2000);
-    
+    }, 3500);
 }
 
-$("#food-roulette-button").click(buildFoodResult);
-
-function buildFoodResult() {
+function foodRouletteSpin() {
     $("#food-roulette-button").off("click");
     $("#food-result").hide();
     $("#rest-hours").hide();
     $("#food-roulette").show();
     $("#restaurantCarousel").carousel("cycle");
-    randomSeattleRestaurants("restaurant");
 
     setTimeout(function () {
         $("#food-roulette").hide();
         $("#food-result").show();
         $("#rest-hours").show();
         $("#food-roulette-button").unbind('click').on("click", buildFoodResult);
-    }, 2000);
+    }, 3500);
+}
+
+$("#food-roulette-button").click(buildFoodResult);
+
+function buildFoodResult() {
+    foodRouletteSpin();
+    randomSeattleRestaurants("restaurant");
 }
