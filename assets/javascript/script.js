@@ -156,14 +156,11 @@ function populateEvent(response) {
     // pulls name of the event
     let rpEvName = randomPick.name.text;
 
-
-    
-
     $("#event-result").empty();
-    $("#event-result").append("<a href=" + rpEvent + " target=_blank>" + rpEvName + "</a>")
-    $("#event-result").append("<p>" + rpTime + "</p>");
-    $("#event-result").append("<p>" + rpLocation + "</p>");
-    $("#event-result").append("<img src=" + rpImageEv + ">");
+    $("#event-result").append("<p class='eventResultText'> <a id=eventResultLink href=" + rpEvent + " target=_blank>" + rpEvName + "</a> </p> <br> <p class='eventResultText'>" + rpTime + "</p> <br> <p class='eventResultText'>" + rpLocation + "</p>" )
+    // $("#event-result").append("<p>" + rpTime + "</p>");
+    // $("#event-result").append("<p class='eventResultText'>" + rpLocation + "</p>");
+    $("#event-result").append("<img id=event-result-img src=" + rpImageEv + ">");
 
     // console.log("EVENT COORDS: ", rpLat, rpLon);
 
@@ -231,7 +228,7 @@ function populateRestaurantInfo(response) {
     $("#sun").text(item.opening_hours.weekday_text[6]);
 
     $("#food-result").empty();
-    $("#food-result").append("<p class=rest-result-text><a id=rest-result-link href="+rpLink+" target=_blank>"+rpName+"</a> &nbsp "+rpLocation+"</p><br><p class=rest-result-text>"+rpAddress+"</p>");
+    $("#food-result").append("<p class=rest-result-text><a id=rest-result-link href="+rpLink+" target=_blank>"+rpName+"</a> </p> <br> <p class=rest-result-text> "+rpLocation+"</p><br><p class=rest-result-text>"+rpAddress+"</p>");
     $("#food-result").append("<img id=rest-result-img src="+imgLink+" alt='restaurant image'>");
 
 }

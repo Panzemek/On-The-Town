@@ -1,6 +1,7 @@
 body {
     margin: 0;
     padding: 0;
+    min-height: 100%;
     /* background-color: lightgray; */
     /* background-image: url("../images/dark-paths.png"); */
 }
@@ -15,14 +16,15 @@ body {
 }
 
 #canvas-image-blending {
-    position: absolute;
+    position: fixed;
     display: block;
     width: 100%;
     height: 100%;
     top: 0;
     right: 0;
     left: 0;
-    z-index: -1;
+    bottom: 0;
+    z-index: -100;
 }
 
 #title-text {
@@ -31,6 +33,8 @@ body {
     text-align: center;
     margin-top: 55px;
     font-family: 'Caveat', cursive;
+    /* font-family: 'Satisfy', cursive; */
+    flex-flow: nowrap;
 }
 
 .flex-container {
@@ -49,11 +53,20 @@ body {
     
 }
 
+#headerBox {
+    justify-content: center;
+    align-items: center;
+    align-content: space-around;
+    margin-bottom: 20px;
+    /* border: solid 7px black; */
+}
+
 #header {
     width: 100%;
     height: 150px;
     align-items: center;
     justify-content: center;
+    align-content: space-around;
 }
 
 
@@ -62,19 +75,32 @@ body {
     align-content: space-around;
 }
 
-#day-list {
-    flex-flow: row nowrap;
+#whereBox {
+    margin-top: 20px;
 }
 
+#day-list {
+    flex-flow: row nowrap;
+    align-content: space-around;
+}
+
+/* Individual day boxes and calendar */
 .day-box {
     justify-content: center;
     align-items: center;
-    margin-right: 3px;
-    height: 45px;
-    width: 45px;
+    margin-right: 10px;
+    height: 50px;
+    width: 50px;
     /* background: rgb(100, 136, 255); */
-    background: lightgray;
-    border: 1px solid black;
+    /* background: transparent; */
+    background:rgb(220, 235, 255, .2);
+    border: 1.75px solid white;
+    border-radius: 3px;
+    font-size: 15px;
+    /* font-family: 'Satisfy', cursive; */
+    /* font-family: 'Caveat', cursive; */
+    font-family: 'Raleway', sans-serif;
+    color: white;
 }
 
 [data-selected="true"]{
@@ -82,6 +108,7 @@ body {
     border-color:rgb(220, 235, 255);
 }
 
+/* Sub header When / Where Questions */
 #select-when-text, #select-where-text {
     justify-content: center;
     align-items: center;
@@ -90,38 +117,45 @@ body {
     width: 250px;
     color: white;
     font-size: 2em;
+    /* font-family: 'Satisfy', cursive; */
     font-family: 'Caveat', cursive;
+    /* align-content: space-around; */
 }
 
-/* Location button color */
 #dropdownMenuButton {
-background-color: lightgray;
+    /* background: transparent; */
+    background:rgb(220, 235, 255, .2);
+    /* border: solid thin #40284A; */
+    border: solid 1.75px white;
+    color: white;
+    /* font-family: 'Satisfy', cursive; */
+    /* font-family: 'Caveat', cursive; */
+    font-family: 'Raleway', sans-serif;
+    font-size: 15px;
 }
-
-.form-group {
-    margin-top: 4px;
-    width: 382px;
-}
-
-.location-form-group {
-    height: 45px;
-}
-
 #roulette-elements-container{
-margin-top: 10px;
+    margin-top: 20px;
     margin-bottom: 10px;
     justify-content: space-between;
-    background: black;
-
+    width: 100%;
+    /* background: black; */
 }
 
+/* Entire event / food container */
 .roulette-container {
-    width: 49.8%;
-    height: 300px;
-    background: white;
+    /* width: 49.8%; */
+    width: 90%;
+    height: 350px;
+    background: rgb(220, 235, 255, .3);
     justify-content: center;
     align-items: center;
+    border: solid white 3px;
+    border-radius: 3px;
 }
+
+/* #event-container {
+    margin-right:5px;
+} */
 
 #food-roulette, #event-roulette, .carousel, #restaurantCarousel, #eventCarousel, .carousel-inner, .carousel-item, .d-block {
     height: 100%;
@@ -129,41 +163,48 @@ margin-top: 10px;
 
 
 /* styling options for food result */
-#food-result {
-    padding: 5px;
+#food-result, #event-result {
+    padding: 8px;
+    overflow: auto;
 }
 
-.rest-result-text {
+.rest-result-text, .eventResultText{
     text-align: center;
+    /* font-family: 'Satisfy', cursive; */
+    /* font-family: 'Caveat', cursive; */
+    font-family: 'Raleway', sans-serif;
+    font-size: 15px;
+    color: white;
+    /* border: 1px gray solid; */
 }
 
-#rest-result-link {
+/* Restaurant result link button */
+#rest-result-link, #eventResultLink{
     /* background-color: #37bc32; */
-    background-color: gray;
+    background-color: rgb(175, 175, 175);
     color: white;
     padding: 5px;
     text-decoration: none;
     border-radius: 5px;
-    border: solid thin #40284A;
+    font-family: 'Caveat', cursive;
+    font-size: 25px;
+    overflow: auto;
+
+    /* border: solid thin #40284A; */
 }
 
 #rest-result-link:hover {
     background-color: #40284A;
-  }
-
-#food-result {
-    color: #40284A;
 }
 
-#rest-result-img {
-    border: solid thin #40284A;
+#food-result, #event-result {
+    color: #40284A;
+    /* overflow: auto; */
+}
+
+#rest-result-img, #event-result-img {
+    border: solid 2px white;
     margin: 10px;
-}
-
-#dropdownMenuButton {
-    background: rgb(100, 136, 255);
-    border: solid thin #40284A;
-    color: #40284A;
 }
 
 .column-centered-container {
@@ -184,9 +225,11 @@ margin-top: 10px;
 #event-narrow-container, #food-narrow-container {
     width: 30%;
     height: 300px;
-    opacity: .7;
+    opacity: .90;
     background: gray;
-    border: rgb(255, 255, 255) solid 1px;
+    /* border: rgb(255, 255, 255) solid 1px; */
+    border: solid lightgray 2px;
+    border-radius: 3px;
     flex-flow: column nowrap;
 }
 
