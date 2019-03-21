@@ -150,11 +150,17 @@ body {
 }
 
 
-/* styling options for food and event result */
+/* styling options for food and event boxes*/
 #food-result, #event-result {
     padding: 8px;
-    overflow: auto;
+    width: 100%;
 }
+
+/* #foodEventResultButtons {
+    height: 70px;
+    flex-flow: column wrap;
+
+} */
 
 .rest-result-text, .eventResultText{
     text-align: center;
@@ -163,7 +169,7 @@ body {
     color: white;
 }
 
-/* Restaurant result link button */
+/* Restaurant and Event result link button */
 #rest-result-link, #eventResultLink{
     background-color: rgb(175, 175, 175);
     color: white;
@@ -205,7 +211,6 @@ body {
     color: white;
     font-size: 18px;
     font-family: 'Raleway', sans-serif;
-
 }
 
 #event-narrow-container, #food-narrow-container {
