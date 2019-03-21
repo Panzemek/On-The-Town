@@ -262,6 +262,13 @@ function populateRestaurantInfo(response) {
 
     let imgLink = "https://maps.googleapis.com/maps/api/place/photo?maxheight=200&photoreference=" + rpImgRef + "&key=AIzaSyDF_fqwmBu3FLIxPBFJLXZuWD5l-23ts74";
 
+    let hoursButton = $('<div class="dropdown" id="rest-hours"><button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Hours</button><div class="dropdown-menu" aria-labelledby="dropdownMenuButton"><a class="dropdown-item" id="mon" href="#"></a><a class="dropdown-item" id="tue" href="#"></a><a class="dropdown-item" id="wed" href="#"></a><a class="dropdown-item" id="thurs" href="#"></a><a class="dropdown-item" id="fri" href="#"></a><a class="dropdown-item" id="sat" href="#"></a><a class="dropdown-item" id="sun" href="#"></a></div></div>');
+
+    $("#food-result").empty();
+    $("#food-result").append("<p class=rest-result-text><a id=rest-result-link href=" + rpLink + " target=_blank>" + rpName + "</a></p><br><p class=rest-result-text>" + rpAddress + "</p>");
+    $("#food-result").append(hoursButton);
+    $("#food-result").append("<p><img id=rest-result-img src=" + imgLink + " alt='restaurant image'></p>");
+    
     $("#mon").text(item.opening_hours.weekday_text[0]);
     $("#tue").text(item.opening_hours.weekday_text[1]);
     $("#wed").text(item.opening_hours.weekday_text[2]);
@@ -269,11 +276,6 @@ function populateRestaurantInfo(response) {
     $("#fri").text(item.opening_hours.weekday_text[4]);
     $("#sat").text(item.opening_hours.weekday_text[5]);
     $("#sun").text(item.opening_hours.weekday_text[6]);
-
-    $("#food-result").empty();
-    $("#food-result").append("<p class=rest-result-text><a id=rest-result-link href=" + rpLink + " target=_blank>" + rpName + "</a> </p> <br> <p class=rest-result-text> " + rpLocation + "</p><br><p class=rest-result-text>" + rpAddress + "</p>");
-    $("#food-result").append("<img id=rest-result-img src=" + imgLink + " alt='restaurant image'>");
-
 }
 
 let cuisineArr = ["American", "Italian", "Chinese", "Japanese", "Thai", "Vietnamese", "Mediterranean", "Mexican", "African", "Indian"]

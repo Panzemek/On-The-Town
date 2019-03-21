@@ -94,6 +94,10 @@ body {
     color: white;
 }
 
+.day-box:hover {
+    background-color: #40284A;
+}
+
 [data-selected="true"]{
     box-shadow: 3px 3px 15px #666;
     border-color:rgb(220, 235, 255);
@@ -118,6 +122,10 @@ body {
     color: white;
     font-family: 'Raleway', sans-serif;
     font-size: 13px;
+}
+
+#dropdownMenuButton:hover {
+    background-color: #40284A;
 }
 
 #dropdownItems {
@@ -149,11 +157,20 @@ body {
     height: 100%;
 }
 
+#rest-hours {
+    margin: 2px auto;
+    text-align: center;
+}
 
-/* styling options for food and event result */
 #food-result, #event-result {
     padding: 8px;
-    overflow: auto;
+    max-width: 500px;
+    overflow: hidden;
+}
+
+#event-container {
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .rest-result-text, .eventResultText{
@@ -172,20 +189,28 @@ body {
     border-radius: 5px;
     font-family: 'Caveat', cursive;
     font-size: 25px;
-    overflow: auto;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 10px;
+    width: 415px;
+    display: block;
 }
 
 #rest-result-link:hover {
     background-color: #40284A;
 }
 
-#food-result, #event-result {
-    color: #40284A;
+#eventResultLink:hover {
+    background-color: #40284A;
 }
 
 #rest-result-img, #event-result-img {
     border: solid 2px white;
     margin: 10px;
+    display: flex;
+    justify-content: center;
+    margin: auto;
 }
 
 .column-centered-container {
@@ -229,6 +254,14 @@ body {
 
 #event-roulette-button, #food-roulette-button{
     color: white;
+}
+
+#event-roulette-button:hover {
+    background-color: #40284A;
+}
+
+#food-roulette-button:hover {
+    background-color: #40284A;
 }
 
 #event-narrow-list, #food-narrow-list {
