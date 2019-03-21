@@ -3,10 +3,10 @@ var granimInstance = new Granim({
     element: '#canvas-image-blending',
     direction: 'top-bottom',
     isPausedWhenNotInView: true,
-    image: {
-        source: 'https://cdn.pixabay.com/photo/2018/01/31/05/30/panoramic-3120304_1280.jpg',
-        blendingMode: 'multiply'
-    },
+    // image: {
+    //     source: 'https://cdn.pixabay.com/photo/2018/01/31/05/30/panoramic-3120304_1280.jpg',
+    //     blendingMode: 'multiply'
+    // },
     states: {
         "default-state": {
             gradients: [
@@ -15,7 +15,7 @@ var granimInstance = new Granim({
                 ['#4B3D60', '#152852'],
                 ['#73434B', '#40284A']
             ],
-            transitionSpeed: 7000
+            transitionSpeed: 3000
         }
     }
 });
@@ -80,6 +80,7 @@ $("#datepicker").click(function () {
     dp.css("position", "relative");
     dp.css("z-index", 1000);
 });
+
 // Location Dropdown
 var cities = ["Auburn", "Bellevue", "Bellingham", "Bothell", "Burien", "Edmonds", "Everett", "Federal Way", "Issaquah", "Kent", "Kirkland", "Lynnwood", "Montlake Terrace", "Olympia", "Puyallup", "Redmond", "Renton", "Seattle", "Shoreline", "Snoqualmie", "Spokane", "Tacoma", "Tukwila", "Woodinville"]
 
@@ -117,9 +118,36 @@ var dateOfEvent;
 var place = "seattle";
 let rpLat;
 let rpLon;
- 
+
 function datetimeplace(){
     
+
+
+function getCategoryCheckboxes() {
+    var evCheckedCats = document.forms['event-narrow-list'].elements['eventListItem[]'];
+    console.log("Event List Items: ", evCheckedCats);
+    let selArr = [];
+    categories ="";
+    for ( let i = 0; i < evCheckedCats.length; i++) {
+        if (evCheckedCats[i].checked) {
+            selArr.push(evCheckedCats[i].value);
+            console.log("Selection Array: ", selArr);
+            categories = selArr.join("%2C");
+            console.log("categories: ", categories);
+            
+        }
+    }
+}
+
+// Eventbrite API call
+function randomEventPick() {
+
+    getCategoryCheckboxes();
+   
+    var place = "seattle";
+
+    var dateOfEvent;
+
     convDate = moment(dateAsString).format("YYYY-MM-DD");
     if (convDate) {
         dateOfEvent = convDate;
@@ -159,6 +187,7 @@ function randomEventPick() {
 
     // the api url we use to get info back from eventbrtire api
     var dateQueryUrl = "https://www.eventbriteapi.com/v3/events/search/?sort_by=date&location.address=" + place + "&location.within=10km&categories=" + categories + "&start_date.range_start=" + dateOfEvent + "T00%3A00%3A01&start_date.range_end=" + dateOfEvent + "T23%3A59%3A59&expand=venue&token=QHBNEFWIRBGDKAUY44N7";
+    
     console.log(dateQueryUrl)
     // ajax call
     $.ajax({
@@ -184,26 +213,43 @@ function populateEvent(response) {
     let rpEvent = randomPick.url;
     let rpEvName = randomPick.name.text;
 
-    console.log(response)
-
     $("#event-result").empty();
-    $("#event-result").append("<a href=" + rpEvent + " target=_blank>" + rpEvName + "</a>")
-    $("#event-result").append("<p>" + rpTime + "</p>");
-    $("#event-result").append("<p>" + rpLocation + "</p>");
-    $("#event-result").append("<img src=" + rpImageEv + ">");
+    $("#event-result").append("<p class='eventResultText'> <a id=eventResultLink href=" + rpEvent + " target=_blank>" + rpEvName + "</a> </p> <br> <p class='eventResultText'>" + rpTime + "</p> <br> <p class='eventResultText'>" + rpLocation + "</p>" )
+    $("#event-result").append("<img id=event-result-img src=" + rpImageEv + ">");
 
 }
 
-// Google API below
-
 var restLat;
 var restLng;
+let cuisineSearchString ="";
 
+function getFoodCheckboxes() {
+    var cuisines = document.forms['food-narrow-list'].elements['cuisineListItem[]'];
+    console.log("Cuisine List Items: ", cuisines);
+    let selArr = [];
+    cuisineSearchString ="";
+    for ( let i = 0; i < cuisines.length; i++) {
+        if (cuisines[i].checked) {
+            selArr.push(cuisines[i].value);
+            console.log("Selection Array: ", selArr);
+            cuisineSearchString = selArr.join("+");
+            console.log("Cuisine Search String: ", cuisineSearchString);
+            
+        }
+    }
+}
+
+// Google Places API call
 function randomSeattleRestaurants() {
+    
+    getFoodCheckboxes();
+    console.log("Search string just before query url: ", cuisineSearchString);
+    
+    queryURL = "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?location="+rpLat+","+rpLon+"&radius=2000&type=restaurant&keyword="+cuisineSearchString+"&key=AIzaSyDF_fqwmBu3FLIxPBFJLXZuWD5l-23ts74"
 
-    queryURL = "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?location=" + rpLat + "," + rpLon + "&radius=2000&type=restaurant&keyword=" + cuisineSearchString + "&key=AIzaSyDF_fqwmBu3FLIxPBFJLXZuWD5l-23ts74"
+    console.log("QueryUrl: " + queryURL);
 
-    $.ajax({
+    $.ajax({  
         url: queryURL,
         dataType: 'json',
         method: "GET",
@@ -253,8 +299,8 @@ function populateRestaurantInfo(response) {
     $("#sun").text(item.opening_hours.weekday_text[6]);
 
     $("#food-result").empty();
-    $("#food-result").append("<p class=rest-result-text><a id=rest-result-link href=" + rpLink + " target=_blank>" + rpName + "</a> &nbsp " + rpLocation + "</p><br><p class=rest-result-text>" + rpAddress + "</p>");
-    $("#food-result").append("<img id=rest-result-img src=" + imgLink + " alt='restaurant image'>");
+    $("#food-result").append("<p class=rest-result-text><a id=rest-result-link href="+rpLink+" target=_blank>"+rpName+"</a> </p> <br> <p class=rest-result-text> "+rpLocation+"</p><br><p class=rest-result-text>"+rpAddress+"</p>");
+    $("#food-result").append("<img id=rest-result-img src="+imgLink+" alt='restaurant image'>");
 
 }
 
@@ -310,17 +356,4 @@ function buildFoodResult() {
         $("#rest-hours").show();
         $("#food-roulette-button").unbind('click').on("click", buildFoodResult);
     }, 2000);
-}
-
-// this puts cuisines checked in the menu into a string that works in google queryurl
-var cuisineSearchString = "";
-function getCheckedCuisines() {
-    cuisineSearchString = "";
-    var checkedCuisines = document.getElementsByName("cuisineListItem");
-    for (var i = 0; i < checkedCuisines.length; i++) {
-        if (checkedCuisines[i].type === 'checkbox' && checkedCuisines[i].checked === true) {
-            cuisineSearchString += checkedCuisines[i].value + "+";
-            console.log(cuisineSearchString);
-        }
-    }
-}
+    }}
