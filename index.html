@@ -16,19 +16,25 @@
 
     <!-- <link href="https://fonts.googleapis.com/css?family=Cuprum" rel="stylesheet"> -->
     <link href="https://fonts.googleapis.com/css?family=Caveat" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+
+    <!-- Google font from Katie-->
+    <!-- <link href="https://fonts.googleapis.com/css?family=Satisfy" rel="stylesheet"> -->
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.js"></script>
 
 </head>
 
 <body>
+   
     <!-- Header elements -->
     <canvas id="canvas-image-blending"></canvas>
-    <h1 id="title-text">Date Nite Roulette</h1>
+    <div id="headerBox" class="flex-container">   
+        <h1 id="title-text">Date Nite Roulette</h1>
+    </div>
     <div class="flex-container all-content-center">
         <div class="flex-container all-content-width">
             <div id="header" class="flex-container">
-
                 <!-- Header container for when and where selection -->
                 <div id="when-where-content" class="flex-container">
                     <!-- Header element for list of days selection -->
@@ -43,29 +49,24 @@
                     </div>
 
                     <!-- Header element for event location selection -->
-                    <div class="flex-container where-container">
+                    <div class="flex-container where-container" id="whereBox">
                         <div id="select-where-text" class="flex-container select-whenwhere-text">
-                            <p>Where's your night?</p>
+                           <p>Where's your night?</p>
                         </div>
                         <div class="dropdown flex-container city-dropdown">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                               Select location
                             </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id=dropdownItems>
-                              <a class="dropdown-item" href="#">City, State</a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="dropdownItems">
+                              <!-- <a class="dropdown-item" href="#">City, State</a> -->
                             </div>
                           </div>
-                        <!-- <div class="location-form-group flex-container">
-                            <form class="location-form-group">
-                                <div class="form-group flex-container">
-                                    <label for="location-form"></label>
-                                    <textarea class="form-control" id="location-form" rows="1"></textarea>
-                                </div>
-                            </form>
-                        </div> -->
                     </div>
                 </div>
+            <!-- </div> -->
             </div>
+        
+       
             <!-- Whole roulette results container -->
             <div id="roulette-elements-container" class="flex-container">
 
@@ -78,28 +79,28 @@
                                 <div class="carousel-inner flex-container">
                                     <div class="carousel-inner">
                                         <div class="carousel-item active">
-                                            <img src="assets/images/events/concert.jpg" class="d-block w-100">
+                                            <img src="assets/images/events/concert2.jpg" class="d-block w-100">
                                         </div>
                                         <div class="carousel-item">
-                                            <img src="assets/images/events/hike.jpg" class="d-block w-100">
+                                            <img src="assets/images/events/hike2.jpg" class="d-block w-100">
                                         </div>
                                         <div class="carousel-item">
-                                            <img src="assets/images/events/movie.jpg" class="d-block w-100">
+                                            <img src="assets/images/events/movie2.jpg" class="d-block w-100">
                                         </div>
                                         <div class="carousel-item">
-                                            <img src="assets/images/events/performance.jpg" class="d-block w-100">
+                                            <img src="assets/images/events/performance2.jpg" class="d-block w-100">
                                         </div>
                                         <div class="carousel-item">
-                                            <img src="assets/images/events/yoga.jpg" class="d-block w-100">
+                                            <img src="assets/images/events/yoga2.jpg" class="d-block w-100">
                                         </div>
                                         <div class="carousel-item">
-                                            <img src="assets/images/events/kayak.jpg" class="d-block w-100">
+                                            <img src="assets/images/events/kayak2.jpg" class="d-block w-100">
                                         </div>
                                         <div class="carousel-item">
-                                            <img src="assets/images/events/football.jpg" class="d-block w-100">
+                                            <img src="assets/images/events/football2.jpg" class="d-block w-100">
                                         </div>
                                         <div class="carousel-item">
-                                            <img src="assets/images/events/ballet.jpg" class="d-block w-100">
+                                            <img src="assets/images/events/ballet2.jpg" class="d-block w-100">
                                         </div>
                                     </div>
                                 </div>
@@ -120,16 +121,16 @@
                             <div id="restaurantCarousel" class="carousel slide" data-interval="50">
                                 <div class="carousel-inner">
                                     <div class="carousel-item active">
-                                        <img src="assets/images/restaurants/salad.jpg" class="d-block w-100">
+                                        <img src="assets/images/restaurants/salad2.jpg" class="d-block w-100">
                                     </div>
                                     <div class="carousel-item">
                                         <img src="assets/images/restaurants/american.jpg" class="d-block w-100">
                                     </div>
                                     <div class="carousel-item">
-                                        <img src="assets/images/restaurants/breakfast.jpg" class="d-block w-100">
+                                        <img src="assets/images/restaurants/breakfast2.jpg" class="d-block w-100">
                                     </div>
                                     <div class="carousel-item">
-                                        <img src="assets/images/restaurants/mexican.jpg" class="d-block w-100">
+                                        <img src="assets/images/restaurants/mexican2.jpg" class="d-block w-100">
                                     </div>
                                     <div class="carousel-item">
                                         <img src="assets/images/restaurants/thai.jpg" class="d-block w-100">
@@ -172,11 +173,11 @@
             <!-- Container for event and food randomizer buttons -->
             <div class="flex-container column-centered-container">
                 <div class="roulette-button-div">
-                    <button id="event-roulette-button" type="button" class="btn btn-success roulette-button">Let's Make a Date</button>
+                    <button id="event-roulette-button" type="button" class="btn roulette-button">Let's Make a Date</button>
                 </div>
 
                 <div class="roulette-button-div">
-                    <button id="food-roulette-button" type="button" class="btn btn-success roulette-button">Find Other Food</button>
+                    <button id="food-roulette-button" type="button" class="btn roulette-button">Find Other Food</button>
                 </div>
             </div>
 
@@ -384,6 +385,8 @@
             </div>
         </div>
     </div>
+
+
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="assets/jquery-ui-1.12.1.custom/external/jquery/jquery.js"></script>

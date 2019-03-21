@@ -3,10 +3,10 @@ var granimInstance = new Granim({
     element: '#canvas-image-blending',
     direction: 'top-bottom',
     isPausedWhenNotInView: true,
-    image: {
-        source: 'https://cdn.pixabay.com/photo/2018/01/31/05/30/panoramic-3120304_1280.jpg',
-        blendingMode: 'multiply'
-    },
+    // image: {
+    //     source: 'https://cdn.pixabay.com/photo/2018/01/31/05/30/panoramic-3120304_1280.jpg',
+    //     blendingMode: 'multiply'
+    // },
     states: {
         "default-state": {
             gradients: [
@@ -15,7 +15,7 @@ var granimInstance = new Granim({
                 ['#4B3D60', '#152852'],
                 ['#73434B', '#40284A']
             ],
-            transitionSpeed: 7000
+            transitionSpeed: 3000
         }
     }
 });
@@ -151,13 +151,10 @@ function populateEvent(response) {
     rpLon = randomPick.venue.longitude;
     let rpEvent = randomPick.venue.address.resource_uri;
     let rpEvName = randomPick.name.text;
-    
 
     $("#event-result").empty();
-    $("#event-result").append("<a href=" + rpEvent + " target=_blank>" + rpEvName + "</a>")
-    $("#event-result").append("<p>" + rpTime + "</p>");
-    $("#event-result").append("<p>" + rpLocation + "</p>");
-    $("#event-result").append("<img src=" + rpImageEv + ">");
+    $("#event-result").append("<p class='eventResultText'> <a id=eventResultLink href=" + rpEvent + " target=_blank>" + rpEvName + "</a> </p> <br> <p class='eventResultText'>" + rpTime + "</p> <br> <p class='eventResultText'>" + rpLocation + "</p>" )
+    $("#event-result").append("<img id=event-result-img src=" + rpImageEv + ">");
 
 }
 
@@ -220,7 +217,7 @@ function populateRestaurantInfo(response) {
     $("#sun").text(item.opening_hours.weekday_text[6]);
 
     $("#food-result").empty();
-    $("#food-result").append("<p class=rest-result-text><a id=rest-result-link href="+rpLink+" target=_blank>"+rpName+"</a> &nbsp "+rpLocation+"</p><br><p class=rest-result-text>"+rpAddress+"</p>");
+    $("#food-result").append("<p class=rest-result-text><a id=rest-result-link href="+rpLink+" target=_blank>"+rpName+"</a> </p> <br> <p class=rest-result-text> "+rpLocation+"</p><br><p class=rest-result-text>"+rpAddress+"</p>");
     $("#food-result").append("<img id=rest-result-img src="+imgLink+" alt='restaurant image'>");
 
 }
