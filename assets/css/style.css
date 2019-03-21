@@ -205,10 +205,8 @@ body {
     border: solid 2px white;
     margin: 10px;
     display: flex;
-    /* align-items: center; */
     justify-content: center;
-    margin: auto;
-    
+    margin: auto;   
 }
 
 .column-centered-container {
