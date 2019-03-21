@@ -149,11 +149,19 @@ body {
     height: 100%;
 }
 
+#event-container {
+    overflow: hidden;
+}
 
-/* styling options for food and event result */
+#rest-hours {
+    margin: 2px auto;
+    text-align: center;
+}
+
 #food-result, #event-result {
     padding: 8px;
-    overflow: auto;
+    overflow: hidden;
+    color: #40284A;
 }
 
 .rest-result-text, .eventResultText{
@@ -172,15 +180,14 @@ body {
     border-radius: 5px;
     font-family: 'Caveat', cursive;
     font-size: 25px;
-    overflow: auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 250px;
 }
 
 #rest-result-link:hover {
     background-color: #40284A;
-}
-
-#food-result, #event-result {
-    color: #40284A;
 }
 
 #rest-result-img, #event-result-img {
