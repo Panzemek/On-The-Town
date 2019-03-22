@@ -124,7 +124,7 @@ body {
     font-size: 13px;
 }
 
-#dropdownMenuButton:hover{
+#dropdownMenuButton:hover {
     background-color: #40284A;
 }
 
@@ -157,11 +157,15 @@ body {
     height: 100%;
 }
 
-/* styling options for food and event boxes*/
+#rest-hours {
+    margin: 2px auto;
+    text-align: center;
+}
+
 #food-result, #event-result {
     padding: 8px;
     max-width: 500px;
-    overflow: hidden; 
+    overflow: hidden;
 }
 
 #event-container {
@@ -176,17 +180,17 @@ body {
     color: white;
 }
 
-/* Restaurant and Event result link button */
+/* Restaurant result link button */
 #rest-result-link, #eventResultLink{
     background-color: rgb(175, 175, 175);
     color: white;
-    padding: 10px;
+    padding: 7px;
     text-decoration: none;
     border-radius: 5px;
     font-family: 'Caveat', cursive;
     font-size: 25px;
     white-space: nowrap;
-    overflow: hidden; 
+    overflow: hidden;
     text-overflow: ellipsis;
     line-height: 10px;
     width: 415px;
@@ -206,7 +210,7 @@ body {
     margin: 10px;
     display: flex;
     justify-content: center;
-    margin: auto;   
+    margin: auto;
 }
 
 .column-centered-container {
@@ -226,6 +230,7 @@ body {
     color: white;
     font-size: 18px;
     font-family: 'Raleway', sans-serif;
+
 }
 
 #event-narrow-container, #food-narrow-container {
@@ -255,7 +260,7 @@ body {
     background-color: #40284A;
 }
 
-#food-roulette-button:hover{
+#food-roulette-button:hover {
     background-color: #40284A;
 }
 
