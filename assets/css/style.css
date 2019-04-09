@@ -162,6 +162,11 @@ body {
     text-align: center;
 }
 
+.tab {
+    margin-left: 75px;
+    line-height: 0.25;
+}
+
 #food-result, #event-result {
     padding: 8px;
     max-width: 500px;
@@ -211,6 +216,7 @@ body {
     display: flex;
     justify-content: center;
     margin: auto;
+    max-height: 200px;
 }
 
 .column-centered-container {

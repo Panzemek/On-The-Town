@@ -192,78 +192,115 @@ function getFoodCheckboxes() {
         if (cuisines[i].checked) {
             selArr.push(cuisines[i].value);
             console.log("Selection Array: ", selArr);
-            cuisineSearchString = selArr.join("+");
+            cuisineSearchString = selArr.join(",");
             console.log("Cuisine Search String: ", cuisineSearchString);
 
         }
     }
 }
 
-// Google Places API call
+// Yelp API call
 function randomSeattleRestaurants() {
 
     getFoodCheckboxes();
     console.log("Search string just before query url: ", cuisineSearchString);
 
-    queryURL = "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?location=" + rpLat + "," + rpLon + "&radius=2000&type=restaurant&keyword=" + cuisineSearchString + "&key=AIzaSyDF_fqwmBu3FLIxPBFJLXZuWD5l-23ts74"
+    let yelpQueryURL = "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?term=Restaurants+"+cuisineSearchString+"&location=Seattle+WA&latitude="+rpLat+"&longitude="+rpLon+"&radius=2000";
 
-    console.log("QueryUrl: " + queryURL);
+    console.log("QueryUrl: " + yelpQueryURL);
 
     $.ajax({
-        url: queryURL,
-        dataType: 'json',
+        url: yelpQueryURL,
         method: "GET",
-    }).then(function (response) {
+        headers: {
+            'Authorization': 'Bearer W8IP0_T7u9NtFkNEdcsD26F6YvMBIpTdxAGPPwJWuAIUGEa764q5SBRbwPDJB2ORpQfoJEtKQp2H_K4gU7AgtaQjyi20F1eIYtNcYXav7Cyk55kiKyUE4JUqGGuQXHYx'
+         },
+    }).then(function(response) {
         randomRestaurantPick(response);
     });
 
 }
 
 function randomRestaurantPick(response) {
-    let arr = response.results;
+    let arr = response.businesses;
     let randomPick = arr[Math.floor(Math.random() * arr.length)];
-    let restID = randomPick.place_id;
-
+    let restID = randomPick.id;
+    console.log("RANDOM PICK: ", randomPick.name);
     pullRestaurantInfo(restID)
 }
 
 function pullRestaurantInfo(restID) {
-    let QueryUrl = "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/details/json?placeid=" + restID + "&key=AIzaSyDF_fqwmBu3FLIxPBFJLXZuWD5l-23ts74";
+    let idQueryUrl = "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/"+restID;
     $.ajax({
-        url: QueryUrl,
-        dataType: 'json',
+        url: idQueryUrl,
         method: "GET",
-    }).then(function (response) {
-        restLat = response.result.geometry.location.lat;
-        restLng = response.result.geometry.location.lng;
+        headers: {
+            'Authorization': 'Bearer W8IP0_T7u9NtFkNEdcsD26F6YvMBIpTdxAGPPwJWuAIUGEa764q5SBRbwPDJB2ORpQfoJEtKQp2H_K4gU7AgtaQjyi20F1eIYtNcYXav7Cyk55kiKyUE4JUqGGuQXHYx'
+         },
+    }).then(function(response) {
+        restLat = response.coordinates.latitude;
+        restLng = response.coordinates.longitude;
+        console.log("REST COORDS: " + restLat + ", " + restLng);
         populateRestaurantInfo(response);
     });
 }
 
 function populateRestaurantInfo(response) {
-    let item = response.result;
-    let rpName = item.name;
-    let rpLink = item.website;
-    let rpLocation = item.address_components[2].long_name;
-    let rpImgRef = item.photos[0].photo_reference;
-    let rpAddress = item.vicinity;
-
-    let imgLink = "https://maps.googleapis.com/maps/api/place/photo?maxheight=200&photoreference=" + rpImgRef + "&key=AIzaSyDF_fqwmBu3FLIxPBFJLXZuWD5l-23ts74";
-
+    let rpName = response.name;
+    let rpLink = response.url;
+    let rpAddress = response.location.address1 + ", " + response.location.city;
+    let rpImgRef = response.image_url;
+    
     let hoursButton = $('<div class="dropdown" id="rest-hours"><button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Hours</button><div class="dropdown-menu" aria-labelledby="dropdownMenuButton"><p class="dropdown-item" id="mon"></p><p class="dropdown-item" id="tue"></p><p class="dropdown-item" id="wed"></p><p class="dropdown-item" id="thurs"></p><p class="dropdown-item" id="fri"></p><p class="dropdown-item" id="sat"></p><p class="dropdown-item" id="sun"></p></div></div>');
 
     $("#food-result").empty();
     $("#food-result").append("<p class=rest-result-text><a id=rest-result-link href=" + rpLink + " target=_blank>" + rpName + "</a></p><br><p class=rest-result-text>" + rpAddress + "</p>");
     $("#food-result").append(hoursButton);
-    $("#food-result").append("<p><img id=rest-result-img src=" + imgLink + " alt='restaurant image'></p>");
-    
-    $("#mon").text(item.opening_hours.weekday_text[0]);
-    $("#tue").text(item.opening_hours.weekday_text[1]);
-    $("#wed").text(item.opening_hours.weekday_text[2]);
-    $("#thurs").text(item.opening_hours.weekday_text[3]);
-    $("#fri").text(item.opening_hours.weekday_text[4]);
-    $("#sat").text(item.opening_hours.weekday_text[5]);
-    $("#sun").text(item.opening_hours.weekday_text[6]);
+    $("#food-result").append("<p><img id=rest-result-img src=" + rpImgRef + " alt='restaurant image'></p>");
+
+    let schedule = response.hours[0].open;
+    formatTime(schedule);
+}
+
+let openArr = ["closed", "closed", "closed", "closed", "closed", "closed", "closed"];
+let closeArr = ["closed", "closed", "closed", "closed", "closed", "closed", "closed"];
+
+
+function formatTime(schedule) {
+    if (schedule.length <= 7) {
+        for (let i = 0; i < schedule.length; i++) {
+            let openTime = moment(schedule[i].start, "hhmm").format("hh:mm a");
+            openArr.splice(i, 1, openTime);
+            let closeTime = moment(schedule[i].end, "hhmm").format("hh:mm a");
+            closeArr.splice(i, 1, closeTime);
+        }
+        $("#mon").text("Monday: " + openArr[0] + " - " + closeArr[0]);
+        $("#tue").text("Tuesday: " + openArr[1] + " - " + closeArr[1]);
+        $("#wed").text("Wednesday: " + openArr[2] + " - " + closeArr[2]);
+        $("#thurs").text("Thursday: " + openArr[3] + " - " + closeArr[3]);
+        $("#fri").text("Friday: " + openArr[4] + " - " + closeArr[4]);
+        $("#sat").text("Saturday: " + openArr[5] + " - " + closeArr[5]);
+        $("#sun").text("Sunday: " + openArr[6] + " - " + closeArr[6]);
+    } 
+    else {
+        openArr.push("closed", "closed", "closed", "closed", "closed", "closed", "closed");
+        closeArr.push("closed", "closed", "closed", "closed", "closed", "closed", "closed");
+
+        for (let i = 0; i < schedule.length; i++) {
+            let openTime = moment(schedule[i].start, "hhmm").format("hh:mm a");
+            openArr.splice(i, 1, openTime);
+            let closeTime = moment(schedule[i].end, "hhmm").format("hh:mm a");
+            closeArr.splice(i, 1, closeTime);
+        }
+
+        $("#mon").html("Monday: " + openArr[0] + " - " + closeArr[0] + "</p><p class='tab'>" + openArr[1] + " - " + closeArr[1]);
+        $("#tue").html("Tuesday: " + openArr[2] + " - " + closeArr[2] + "</p><p class='tab'>" + openArr[3] + " - " + closeArr[3]);
+        $("#wed").html("Wednesday: " + openArr[4] + " - " + closeArr[4] + "</p><p class='tab'>" + openArr[5] + " - " + closeArr[5]);
+        $("#thurs").html("Thursday: " + openArr[6] + " - " + closeArr[6] + "</p><p class='tab'>" + openArr[7] + " - " + closeArr[7]);
+        $("#fri").html("Friday: " + openArr[8] + " - " + closeArr[8] + "</p><p class='tab'>" + openArr[9] + " - " + closeArr[9]);
+        $("#sat").html("Saturday: " + openArr[10] + " - " + closeArr[10] + "</p><p class='tab'>" + openArr[11] + " - " + closeArr[11]);
+        $("#sun").html("Sunday: " + openArr[12] + " - " + closeArr[12] + "</p><p class='tab'>" + openArr[13] + " - " + closeArr[13]);
+    }
 }
 
 let cuisineArr = ["American", "Italian", "Chinese", "Japanese", "Thai", "Vietnamese", "Mediterranean", "Mexican", "African", "Indian"]
